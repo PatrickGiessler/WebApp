@@ -1,0 +1,23 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatrickGiessler/WebApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PatrickGiessler/WebApp/issues"
+  },
+  "homepage": "https://github.com/PatrickGiessler/WebApp#readme",
+  "dependencies": {
+    "firebase": "^5.5.3",
+    "npm": "^6.4.1"
+  }
+}
