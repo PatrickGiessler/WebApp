@@ -67,3 +67,42 @@ let onDoorKlicked = (event) => {
         alert("nicht so hastig");
     }
 };
+et makePopover = (selectedObject) => {
+    let question = document.getElementById("question");
+    question.innerHTML = "" + selectedObject.Frage;
+
+    let popover = document.getElementById("popover");
+    popover.style.display = "block";
+}
+
+let onCloseClicked = () => {
+    let popover = document.getElementById("popover");
+    popover.style.display = "none";
+}
+
+let onCheckClicked = () => {
+    let input = document.getElementById("answer")
+    let answer = input.value;
+    let selectedObject = window.SelectedObject;
+    let database = window.database;
+
+    if (answer.toLowerCase() === selectedObject.Antwort.toLowerCase()) {
+        event.srcElement.className = "right";
+        SelectedObject.beantwortet = true;
+        let day = SelectedObject.Day;
+        let path = "/users/Lisa/Days/Day" + day;
+
+        //clear input
+        input.value = "";
+
+        database.ref(path).set({
+            Antwort: SelectedObject.Antwort,
+            Day: day,
+            Frage: SelectedObject.Frage,
+            beantwortet: true
+        });
+    } else {
+        event.srcElement.className = "false";
+    }
+
+};
