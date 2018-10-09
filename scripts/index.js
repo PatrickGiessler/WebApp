@@ -67,21 +67,21 @@ let onDoorKlicked = (event) => {
         alert("nicht so hastig");
     }
 };
-et makePopover = (selectedObject) => {
+let makePopover = (selectedObject) => {
     let question = document.getElementById("question");
     question.innerHTML = "" + selectedObject.Frage;
 
     let popover = document.getElementById("popover");
     popover.style.display = "block";
-}
+};
 
 let onCloseClicked = () => {
     let popover = document.getElementById("popover");
     popover.style.display = "none";
-}
+};
 
 let onCheckClicked = () => {
-    let input = document.getElementById("answer")
+    let input = document.getElementById("answer");
     let answer = input.value;
     let selectedObject = window.SelectedObject;
     let database = window.database;
