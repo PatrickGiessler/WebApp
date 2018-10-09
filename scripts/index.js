@@ -17,12 +17,21 @@ window.addEventListener("load", () => {
     let checkButton = document.getElementById("checkButton");
     checkButton.addEventListener("click", onCheckClicked);
 });
+let getData = () => {
+    let database = window.database;
+    let ref = database.ref("/users/Lisa/Days");
+    ref.on("value", function (snap) {
+        generateView(snap.val());
+    });
+};
+
 let generateView = (data) => {
     window.data = data;
     let kalender = document.getElementById("kalender");
     //clear for live change in Database
     kalender.innerHTML = "";
     let key;
+
 // i++ (Inkrement), ist dasselbe wie i = i + 1
     let keyArray = [];
     //console.log(i);
@@ -39,8 +48,9 @@ let generateView = (data) => {
         addViewElement(kalender, selectedDay, solved);
         keyArray.splice(rand, 1);
     }
-}
+};
 let addViewElement = (kalender, day, solved) => {
+
     let iDivDor = document.createElement("div");
     iDivDor.className = 'dors col-xs-4';
     iDivDor.addEventListener("click", onDoorKlicked);
@@ -61,12 +71,14 @@ let onDoorKlicked = (event) => {
     selectedDay = selectedObject.Day;
     currentDate = new Date();
     currentDay = currentDate.getDate();
+
     if (selectedDay <= currentDay) {
         makePopover(selectedObject);
     } else {
         alert("nicht so hastig");
     }
 };
+
 let makePopover = (selectedObject) => {
     let question = document.getElementById("question");
     question.innerHTML = "" + selectedObject.Frage;
@@ -81,7 +93,7 @@ let onCloseClicked = () => {
 };
 
 let onCheckClicked = () => {
-    let input = document.getElementById("answer");
+    let input = document.getElementById("answer")
     let answer = input.value;
     let selectedObject = window.SelectedObject;
     let database = window.database;
