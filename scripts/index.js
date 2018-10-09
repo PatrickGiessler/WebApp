@@ -17,10 +17,53 @@ window.addEventListener("load", () => {
     let checkButton = document.getElementById("checkButton");
     checkButton.addEventListener("click", onCheckClicked);
 });
-let getData = () => {
-    let database = window.database;
-    let ref = database.ref("/users/Lisa/Days");
-    ref.on("value", function (snap) {
-        alert(snap.val());
-    });
+let generateView = (data) => {
+    window.data = data;
+    let kalender = document.getElementById("kalender");
+    //clear for live change in Database
+    kalender.innerHTML = "";
+    let key;
+// i++ (Inkrement), ist dasselbe wie i = i + 1
+    let keyArray = [];
+    //console.log(i);
+    for (key in data) {
+        keyArray.push(key);
+    }
+    let keyArraySize = keyArray.length;
+    for (let i = 0; i < keyArraySize; i++) {
+        let size = keyArray.length;
+        let rand = Math.floor(Math.random() * size);
+        let selectedKey = keyArray[rand];
+        let selectedDay = data[selectedKey].Day;
+        let solved = data[selectedKey].beantwortet;
+        addViewElement(kalender, selectedDay, solved);
+        keyArray.splice(rand, 1);
+    }
+}
+let addViewElement = (kalender, day, solved) => {
+    let iDivDor = document.createElement("div");
+    iDivDor.className = 'dors col-xs-4';
+    iDivDor.addEventListener("click", onDoorKlicked);
+    if (solved) {
+        iDivDor.className += " makeItGreen";
+    }
+    //iDivDor.className = 'tuerchen';
+    let iDivNumer = document.createElement("div");
+    iDivNumer.className = "number";
+    iDivNumer.innerHTML = "" + day;
+    iDivDor.appendChild(iDivNumer);
+    kalender.appendChild(iDivDor);
+};
+let onDoorKlicked = (event) => {
+    let selectedId = "Day" + event.srcElement.innerText;
+    let selectedObject = window.data[selectedId];
+    window.SelectedObject = selectedObject;
+    selectedDay = selectedObject.Day;
+    currentDate = new Date();
+    currentDay = currentDate.getDate();
+    if (selectedDay <= currentDay) {
+        makePopover(selectedObject);
+    } else {
+        alert("nicht so hastig");
+    }
 };
