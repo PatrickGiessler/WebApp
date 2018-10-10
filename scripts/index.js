@@ -33,6 +33,44 @@ let getData = (email) => {
     });
 };
 
+var firebase = require('firebase');
+var config = {
+    apiKey: "AIzaSyCof8vlK6qFoGmZOAZDX8MjIV-0_sHl73g",
+    databaseURL: "https://projektfordh.firebaseio.com/",
+    projectId: "projektfordh",
+    storageBucket: "projektfordh.appspot.com"
+};
+window.app = firebase.initializeApp(config);
+window.database = firebase.database();
+
+window.addEventListener("load", () => {
+    // Anwendung starten
+    let email = window.sessionStorage.getItem("user");
+    if (email === null || email === undefined) {
+        alert("ups, da ging was schief! bitte nochmals anmelden");
+        window.location.href = "./login.html";
+    } else {
+        getData(email);
+    }
+
+
+    let closeButton = document.getElementById("closeButton");
+    closeButton.addEventListener("click", onCloseClicked);
+    let closeButtonRep = document.getElementById("closeButtonRep");
+    closeButtonRep.addEventListener("click", onCloseClicked);
+
+    let checkButton = document.getElementById("checkButton");
+    checkButton.addEventListener("click", onCheckClicked);
+});
+let getData = (email) => {
+    let database = window.database;
+    let ref = database.ref("/users/" + email + "/Days");
+
+    ref.on("value", function (snap) {
+        generateView(snap.val());
+    });
+};
+
 let generateView = (data) => {
     window.data = data;
     let kalender = document.getElementById("kalender");
@@ -88,11 +126,25 @@ let onDoorKlicked = (event) => {
 };
 
 let makePopover = (selectedObject) => {
-    let question = document.getElementById("question");
-    question.innerHTML = "" + selectedObject.Frage;
-
     let popover = document.getElementById("popover");
-    popover.style.display = "block";
+    let popoverQuest = document.getElementById("AntwortForm");
+    let popoverResp = document.getElementById("ResponseForm");
+
+     popover.style.display = "block";
+    if (SelectedObject.beantwortet) {
+        let image = document.getElementById("RespImage");
+       image.src = selectedObject.Response;
+       popoverQuest.style.display = "none";
+       popoverResp.style.display = "";
+
+    }
+    else {
+        let question = document.getElementById("question");
+        question.innerHTML = "" + selectedObject.Frage;
+        popoverQuest.style.display = "";
+        popoverResp.style.display = "none";
+    }
+
 };
 
 let onCloseClicked = () => {
@@ -117,8 +169,7 @@ let onCheckClicked = () => {
             alert("ups, da ging was schief! bitte nochmals anmelden");
             window.location.href = "./login.html";
         } else {
-            let path = "/users/"+email+"/Days/Day" + day;
-
+            let path = "/users/" + email + "/Days/Day" + day;
             //clear input
             input.value = "";
 
@@ -126,7 +177,8 @@ let onCheckClicked = () => {
                 Antwort: SelectedObject.Antwort,
                 Day: day,
                 Frage: SelectedObject.Frage,
-                beantwortet: true
+                beantwortet: true,
+                Response: SelectedObject.Respnse
             });
         }
 
@@ -136,3 +188,6 @@ let onCheckClicked = () => {
     }
 
 };
+let showSolution = () => {
+    let selectedObject = window.SelectedObject;
+}
