@@ -1,4 +1,18 @@
 
+var firebase = require('firebase');
+var config = {
+    apiKey: "AIzaSyCof8vlK6qFoGmZOAZDX8MjIV-0_sHl73g",
+    databaseURL: "https://projektfordh.firebaseio.com/",
+    projectId: "projektfordh",
+    storageBucket: "projektfordh.appspot.com"
+};
+window.app = firebase.initializeApp(config);
+window.database = firebase.database();
+
+
+
+
+
 window.addEventListener("load", () => {
     // Anwendung starten
 
@@ -28,6 +42,9 @@ window.addEventListener("load", () => {
     window.earHairL = document.querySelector('.earL .earHair');
     window.earHairR = document.querySelector('.earR .earHair');
     window.hair = document.querySelector('.hair');
+    
+    let loginButtom = document.getElementById("login");
+    loginButtom.addEventListener("click", onLogInClicked);
 
 
     window.caretPos;
@@ -252,5 +269,30 @@ function getPosition(el) {
         x: xPos,
         y: yPos
     };
+}
+
+let onLogInClicked =()=>{
+    let email = window.email.value;
+    let inputPW =   window.password.value;
+    let pw = "";
+    
+    
+    email = email.substr(0, email.indexOf('@')); 
+    
+    let database = window.database;
+    let ref = database.ref("/users/"+email);
+     ref.on("value", function (snap) {
+        pw = snap.val().pw;
+        if (pw === inputPW){
+            window.sessionStorage.setItem("user",email);
+            window.location.href = "./index.html";
+        }
+    });
+    
+    
+ 
+    
+    //do Firebasestuff
+    
 }
 

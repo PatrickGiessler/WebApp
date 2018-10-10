@@ -10,16 +10,17 @@ window.database = firebase.database();
 
 window.addEventListener("load", () => {
     // Anwendung starten
-
-    getData();
+    let email = window.sessionStorage.getItem("user");
+    getData(email);
     let closeButton = document.getElementById("closeButton");
     closeButton.addEventListener("click", onCloseClicked);
     let checkButton = document.getElementById("checkButton");
     checkButton.addEventListener("click", onCheckClicked);
 });
-let getData = () => {
+let getData = (email) => {
     let database = window.database;
-    let ref = database.ref("/users/Lisa/Days");
+    let ref = database.ref("/users/"+email+"/Days");
+    
     ref.on("value", function (snap) {
         generateView(snap.val());
     });
