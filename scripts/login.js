@@ -287,6 +287,9 @@ let onLogInClicked =()=>{
             window.sessionStorage.setItem("user",email);
             window.location.href = "./index.html";
         }
+        else{
+            alert("E-Mail der Passwort falsch");
+        }
     });
     
     

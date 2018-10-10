@@ -11,7 +11,14 @@ window.database = firebase.database();
 window.addEventListener("load", () => {
     // Anwendung starten
     let email = window.sessionStorage.getItem("user");
-    getData(email);
+    if (email === null || email === undefined) {
+        alert("ups, da ging was schief! bitte nochmals anmelden");
+        window.location.href = "./login.html";
+    } else {
+        getData(email);
+    }
+
+
     let closeButton = document.getElementById("closeButton");
     closeButton.addEventListener("click", onCloseClicked);
     let checkButton = document.getElementById("checkButton");
@@ -19,8 +26,8 @@ window.addEventListener("load", () => {
 });
 let getData = (email) => {
     let database = window.database;
-    let ref = database.ref("/users/"+email+"/Days");
-    
+    let ref = database.ref("/users/" + email + "/Days");
+
     ref.on("value", function (snap) {
         generateView(snap.val());
     });
@@ -103,17 +110,27 @@ let onCheckClicked = () => {
         event.srcElement.className = "right";
         SelectedObject.beantwortet = true;
         let day = SelectedObject.Day;
-        let path = "/users/Lisa/Days/Day" + day;
+        let email = window.sessionStorage.getItem("user");
 
-        //clear input
-        input.value = "";
 
-        database.ref(path).set({
-            Antwort: SelectedObject.Antwort,
-            Day: day,
-            Frage: SelectedObject.Frage,
-            beantwortet: true
-        });
+        if (email === null || email === undefined) {
+            alert("ups, da ging was schief! bitte nochmals anmelden");
+            window.location.href = "./login.html";
+        } else {
+            let path = "/users/"+email+"/Days/Day" + day;
+
+            //clear input
+            input.value = "";
+
+            database.ref(path).set({
+                Antwort: SelectedObject.Antwort,
+                Day: day,
+                Frage: SelectedObject.Frage,
+                beantwortet: true
+            });
+        }
+
+
     } else {
         event.srcElement.className = "false";
     }
