@@ -143,7 +143,7 @@ let onCheckClicked = () => {
                 Day: day,
                 Frage: SelectedObject.Frage,
                 beantwortet: true,
-                Response: SelectedObject.Respnse
+                Response: SelectedObject.Response
             });
         }
 
