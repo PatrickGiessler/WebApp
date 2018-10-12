@@ -30,7 +30,24 @@ body {
     padding: 0;
     margin: 0;
 }
+#kalender{
+        padding-left: 1em;
+}
+@keyframes snow {
+    0% {
+        background-position: 0px 0px;
+    }
+    100% {
+        background-position: 500px 1000px, 400px 400px, 300px 300px;
+    }
+}
 
+body {
+    background-color: #eee !important;
+    background-image: url('../pictures/snow1.png'), url('../pictures/snow2.png'), url('../pictures/snow3.png');
+
+    animation: snow 20s linear infinite;
+}
 .dors{
     position: relative;
     width: 11%;
@@ -94,71 +111,93 @@ body {
   100% {transform: rotate(0deg);}
 }
 
-.hover_bkgr_fricc{
-    background:rgba(0,0,0,.4);
-    cursor:pointer;
-    display:none;
-    height:100%;
-    position:fixed;
-    text-align:center;
-    top:0;
-    width:100%;
-    z-index:10000;
-}
-.hover_bkgr_fricc .helper{
-    display:inline-block;
-    height:100%;
-    vertical-align:middle;
-}
-.hover_bkgr_fricc > div {
-    background-color: #fff;
-    box-shadow: 10px 10px 60px #555;
-    display: inline-block;
-    height: auto;
-    max-width: 551px;
-    min-height: 100px;
-    vertical-align: middle;
-    width: 60%;
-    position: relative;
-    border-radius: 8px;
-    padding: 15px 5%;
-}
-.popupCloseButton {
-    background-color: #fff;
-    border: 3px solid #999;
-    border-radius: 50px;
-    cursor: pointer;
-    display: inline-block;
-    font-family: arial;
-    font-weight: bold;
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    font-size: 25px;
-    line-height: 30px;
-    width: 30px;
-    height: 30px;
+
+
+
+h1 {
+    margin: 60px 0 40px 0;
     text-align: center;
+        font-size: 5rem;
 }
-.popupCloseButton:hover {
-    background-color: #ccc;
+
+.open-message h2 {
+    margin:  10px;
 }
-.trigger_popup_fricc {
-    cursor: pointer;
-    font-size: 20px;
-    margin: 20px;
-    display: inline-block;
-    font-weight: bold;
+
+
+/* Larger than phablet (also point when grid becomes active) */
+@media (min-width: 500px) {
+    h1 {
+        font-size: 7rem;
+    }
+
+    .open-message p{
+        font-size: 1.2em;
+    }
+
 }
-.right{
-    background-color: green;
-}
-.false{
-    background-color: red;
-}
-.hide{
-    display: none;
-}
-.show{
+
+
+h1 small {
     display: block;
+    font-size: 0.5em;
 }
+
+.coupon {
+    font-size: 20px;
+    /*border-radius: 0 3px 3px 0;*/
+    border-radius: 2px;
+    height: 60px;
+    width: 150px;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    backface-visibility: hidden;
+    transform: rotateY(180deg); 
+    transform-style: preserve-3d;
+}
+
+.coupon .coupon-back,
+.coupon .coupon-front {
+    position: absolute;
+    width: 100%;
+    line-height: 22px;
+    padding: 6px 0;
+    display: block;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    background: #fff;
+    border: 2px dashed #AEAEAE;
+    box-sizing: border-box;
+}
+
+.coupon .coupon-back {
+    line-height: 44px;
+    font-size: 30px;
+    transform: rotateY(0deg);
+    backface-visibility: hidden;
+
+}
+/*
+.coupon:before,
+.coupon:after {
+    content: "";
+    display: block;
+    position: absolute;
+    background: #fff;
+    transform: rotate(-45deg);
+    width: 21px;
+    height: 6px;
+    top: 0;
+    right: 100%;
+    transform-origin: top right;
+    border-radius: 3px 0 0 0;
+}
+.coupon:after {
+    transform: rotate(45deg);
+    top: auto;
+    bottom: 0;
+    right: 100%;
+    transform-origin: bottom right;
+    border-radius: 0 0 0 3px;
+}*/

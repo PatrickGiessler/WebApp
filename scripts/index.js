@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
     closeButton.addEventListener("click", onCloseClicked);
     let closeButtonRep = document.getElementById("closeButtonRep");
     closeButtonRep.addEventListener("click", onCloseClicked);
-    
+
     let checkButton = document.getElementById("checkButton");
     checkButton.addEventListener("click", onCheckClicked);
 });
@@ -50,6 +50,7 @@ let generateView = (data) => {
         keyArray.push(key);
     }
     let keyArraySize = keyArray.length;
+    //  for (let i = 0; i < keyArraySize; i++) {
     for (let i = 0; i < keyArraySize; i++) {
         let size = keyArray.length;
         let rand = Math.floor(Math.random() * size);
@@ -62,29 +63,111 @@ let generateView = (data) => {
 };
 let addViewElement = (kalender, day, solved) => {
 
-    let iDivDor = document.createElement("div");
-    iDivDor.className = 'dors col-xs-4';
-    iDivDor.addEventListener("click", onDoorKlicked);
-    if (solved) {
-        iDivDor.className += " makeItGreen";
-    }
-    //iDivDor.className = 'tuerchen';
-    let iDivNumer = document.createElement("div");
-    iDivNumer.className = "number";
-    iDivNumer.innerHTML = "" + day;
-    iDivDor.appendChild(iDivNumer);
-    kalender.appendChild(iDivDor);
+    let sectionWrapper = document.createElement("section");
+    sectionWrapper.className = "cube-wrapper col-xs-4 ";
+    sectionWrapper.addEventListener("click", onDoorKlicked);
+
+    let cubeDiv = document.createElement("div");
+    cubeDiv.className = "cube";
+
+    let figurFront = document.createElement("figure");
+    figurFront.className = "front";
+    figurFront.innerHTML = "" + day;
+    cubeDiv.appendChild(figurFront);
+
+    let figurback = document.createElement("figure");
+    figurback.className = "back";
+    cubeDiv.appendChild(figurback);
+
+    let figurright = document.createElement("figure");
+    figurright.className = "right";
+    cubeDiv.appendChild(figurright);
+
+    let figurleft = document.createElement("figure");
+    figurleft.className = "left";
+    figurleft.innerHTML = "" + day;
+    cubeDiv.appendChild(figurleft);
+
+    let figurtop = document.createElement("figure");
+    figurtop.className = "top";
+
+    let lowerLeft = document.createElement("div");
+    lowerLeft.className = "lower lower-left";
+    let lowerRight = document.createElement("div");
+    lowerRight.className = "lower lower-right";
+    let upperLeft = document.createElement("div");
+    upperLeft.className = "upper upper-left";
+    let upperRight = document.createElement("div");
+    upperRight.className = "upper upper-right";
+    figurtop.appendChild(lowerLeft);
+    figurtop.appendChild(lowerRight);
+    figurtop.appendChild(upperLeft);
+    figurtop.appendChild(upperRight);
+
+    cubeDiv.appendChild(figurtop);
+
+    let figurbottom = document.createElement("figure");
+    figurbottom.className = "bottom";
+    cubeDiv.appendChild(figurbottom);
+
+    let figurshadow = document.createElement("figure");
+    figurshadow.className = "shadow";
+    cubeDiv.appendChild(figurshadow);
+
+
+    sectionWrapper.appendChild(cubeDiv);
+    /*<section class="cube-wrapper">
+     <div class="cube">
+     <figure class="front"></figure>
+     <figure class="back"></figure>
+     <figure class="right"></figure>
+     <figure class="left"></figure>
+     <figure class="top"></figure>
+     <figure class="bottom"></figure>
+     <figure class="shadow"></figure>
+     </div>
+     </section> */
+    kalender.appendChild(sectionWrapper);
+//
+//
+//
+//    let iDivDor = document.createElement("div");
+//    iDivDor.className = 'dors col-xs-4';
+//    iDivDor.addEventListener("click", onDoorKlicked);
+//    if (solved) {
+//        iDivDor.className += " makeItGreen";
+//    }
+//    //iDivDor.className = 'tuerchen';
+//    let iDivNumer = document.createElement("div");
+//    iDivNumer.className = "number";
+//    iDivNumer.innerHTML = "" + day;
+//    iDivDor.appendChild(iDivNumer);
+//    kalender.appendChild(iDivDor);
 };
 let onDoorKlicked = (event) => {
+
+    //event.srcElement.classname += " open"
     let selectedId = "Day" + event.srcElement.innerText;
     let selectedObject = window.data[selectedId];
-    window.SelectedObject = selectedObject;
-    selectedDay = selectedObject.Day;
+    let selectedDay;
+    if (selectedObject == null) {
+        
+       selectedDay = event.srcElement.parentElement.children[0].innerHTML;
+    }
+    else{
+        window.SelectedObject = selectedObject;
+        selectedDay = selectedObject.Day;
+    }
+
     currentDate = new Date();
     currentDay = currentDate.getDate();
 
     if (selectedDay <= currentDay) {
-        makePopover(selectedObject);
+      
+        event.srcElement.parentElement.parentElement.classList.toggle("open");
+       // makePopover(selectedObject);
+
+
     } else {
         alert("nicht so hastig");
     }
@@ -94,16 +177,15 @@ let makePopover = (selectedObject) => {
     let popover = document.getElementById("popover");
     let popoverQuest = document.getElementById("AntwortForm");
     let popoverResp = document.getElementById("ResponseForm");
-    
-     popover.style.display = "block";
+
+    popover.style.display = "block";
     if (SelectedObject.beantwortet) {
         let image = document.getElementById("RespImage");
-       image.src = selectedObject.Response;
-       popoverQuest.style.display = "none";
-       popoverResp.style.display = "";
-       
-    } 
-    else {
+        image.src = selectedObject.Response;
+        popoverQuest.style.display = "none";
+        popoverResp.style.display = "";
+
+    } else {
         let question = document.getElementById("question");
         question.innerHTML = "" + selectedObject.Frage;
         popoverQuest.style.display = "";
