@@ -3,3 +3,5 @@
 /node_modules/**
 /scripts/bundle.js
 /nbproject/private/
+nbproject/project.xml
+nbproject/project.properties
