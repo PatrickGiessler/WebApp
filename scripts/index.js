@@ -32,6 +32,9 @@ window.addEventListener("load", () => {
     let checkButton = document.getElementById("checkButton");
     checkButton.addEventListener("click", onCheckClicked);
 
+    let inputField =  document.getElementById("answer");
+    inputField.addEventListener("keyup",onInputKeyUp);
+        
 
 });
 let getData = (email) => {
@@ -253,6 +256,16 @@ let makePopover = (selectedObject) => {
     }
 
 };
+
+let onInputKeyUp = (event)=>{
+    event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    document.getElementById("checkButton").click();
+  }
+};
+
 
 let onCloseClicked = (event) => {
     let popover = document.getElementById("popover");

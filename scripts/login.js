@@ -67,8 +67,11 @@ window.addEventListener("load", () => {
     window.email.addEventListener('input', onemailInput);
     window.password.addEventListener('focus', onpasswordFocus);
     window.password.addEventListener('blur', onpasswordBlur);
+     window.password.addEventListener('keyup', onInputKeyUp);
     TweenMax.set(window.armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
     TweenMax.set(window.armR, {x: -93, y: 220, rotation: -105, transformOrigin: "top right"});
+    
+    
 });
 
 
@@ -294,10 +297,13 @@ let onLogInClicked =(event)=>{
         }
     });
     
-    
- 
-    
-    //do Firebasestuff
-    
+};
+let onInputKeyUp = (event)=>{
+    event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    document.getElementById("login").click();
+  }
 };
 
