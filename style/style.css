@@ -58,6 +58,25 @@ h1 small{
     display:block;
     font-size:.5em
 }
+
+button {
+    margin: 0;
+    padding: .65em 1em 1em;
+    background-color: #4eb8dd;
+    border: none;
+    border-radius: 4px !important;
+    box-sizing:
+    border-box;
+    box-shadow: none;
+    width: 80%;
+    height: 65px;
+    font-size: 1.4em !important;
+    color: #FFF;
+    font-weight: 600;
+    font-family: inherit;
+    transition: background-color .2s ease-out;
+  }
+
 .coupon{
     font-size:20px;
     border-radius:2px;
