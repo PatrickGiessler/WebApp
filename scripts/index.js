@@ -263,7 +263,7 @@ let onCloseClicked = () => {
     popover.style.display = "none";
 };
 
-let onCheckClicked = () => {
+let onCheckClicked = (event) => {
     let input = document.getElementById("answer")
     let answer = input.value;
     let selectedObject = window.SelectedObject;
