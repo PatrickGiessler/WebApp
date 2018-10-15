@@ -11,7 +11,7 @@ window.database = firebase.database();
 window.addEventListener("load", () => {
     // Anwendung starten
     let email = window.sessionStorage.getItem("user");
-     let color = window.sessionStorage.getItem("bgCol");
+    let color = window.sessionStorage.getItem("bgCol");
     if (email === null || email === undefined) {
         alert("ups, da ging was schief! bitte nochmals anmelden");
         window.location.href = "./login.html";
@@ -27,12 +27,12 @@ window.addEventListener("load", () => {
     let closeButtonRep = document.getElementById("closeButtonRep");
     closeButtonRep.addEventListener("click", onCloseClicked);
     let backbutton = document.getElementById("zurückButton");
-   backbutton.addEventListener("click", onCloseClicked);
+    backbutton.addEventListener("click", onCloseClicked);
 
-   let checkButton = document.getElementById("checkButton");
-   checkButton.addEventListener("click", onCheckClicked);
-   
-   
+    let checkButton = document.getElementById("checkButton");
+    checkButton.addEventListener("click", onCheckClicked);
+
+
 });
 let getData = (email) => {
     let database = window.database;
@@ -205,6 +205,7 @@ let onDoorKlicked = (event) => {
     let selectedId = "Day" + event.srcElement.innerText;
     let selectedObject = window.data[selectedId];
     let selectedDay;
+    document.getElementById("checkButton").classList.remove("right");
     if (selectedObject == null) {
 
         selectedDay = event.srcElement.parentElement.children[0].innerHTML;
@@ -255,7 +256,10 @@ let makePopover = (selectedObject) => {
 
 let onCloseClicked = () => {
     let popover = document.getElementById("popover");
-    document.getElementsByClassName('open')[0].classList.toggle("open");
+    let element =  document.getElementsByClassName('open')[0];
+    if (element !== undefined){
+        document.getElementsByClassName('open')[0].classList.toggle("open");
+    }
     popover.style.display = "none";
 };
 
@@ -264,6 +268,7 @@ let onCheckClicked = () => {
     let answer = input.value;
     let selectedObject = window.SelectedObject;
     let database = window.database;
+    
 
     if (answer.toLowerCase() === selectedObject.Antwort.toLowerCase()) {
         event.srcElement.className = "right";
@@ -277,8 +282,7 @@ let onCheckClicked = () => {
             window.location.href = "./login.html";
         } else {
             let path = "/users/" + email + "/Days/Day" + day;
-            //clear input
-            input.value = "";
+            
 
             database.ref(path).set({
                 Antwort: SelectedObject.Antwort,
@@ -287,6 +291,22 @@ let onCheckClicked = () => {
                 beantwortet: true,
                 Response: SelectedObject.Response
             });
+            
+            setTimeout(function () {
+            let popoverQuest = document.getElementById("AntwortForm");
+            let popoverResp = document.getElementById("ResponseForm");
+            let image = document.getElementById("RespImage");
+            image.src = SelectedObject.Response;
+            popoverQuest.style.display = "none";
+            popoverResp.style.display = "";
+            //clear input
+            input.value = "";
+            
+            }, 1000);
+            
+
+
+
         }
 
 
