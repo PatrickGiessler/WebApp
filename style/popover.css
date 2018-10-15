@@ -1,3 +1,29 @@
+#question{
+  font-size: 3em;
+}
+
+#answer{
+  width: 100%;
+  height: 4em;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+
+#zurückButton{
+  float: left;
+  width: 40%;
+  font-size: 1em !important;
+}
+
+#lösungButton{
+  float: right;
+  width: 40%;
+  font-size: 1em !important;
+}
+
+#RespImage{
+  position: relative;
+}
 
 .hover_bkgr_fricc{
     background:rgba(0,0,0,.4);
@@ -37,12 +63,12 @@
     font-family: arial;
     font-weight: bold;
     position: absolute;
-    top: -20px;
-    right: -20px;
-    font-size: 25px;
-    line-height: 30px;
-    width: 30px;
-    height: 30px;
+    top: -0.8em;
+    right: -0.8em;
+    font-size: 1.5em;
+    line-height: 1.3em;
+    width: 1.5em;
+    height: 1.5em;
     text-align: center;
 }
 .popupCloseButton:hover {
