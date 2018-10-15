@@ -271,7 +271,7 @@ function getPosition(el) {
     };
 }
 
-let onLogInClicked =()=>{
+let onLogInClicked =(event)=>{
     let email = window.email.value;
     let inputPW =   window.password.value;
     let pw = "";
@@ -299,5 +299,5 @@ let onLogInClicked =()=>{
     
     //do Firebasestuff
     
-}
+};
 

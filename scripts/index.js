@@ -254,7 +254,7 @@ let makePopover = (selectedObject) => {
 
 };
 
-let onCloseClicked = () => {
+let onCloseClicked = (event) => {
     let popover = document.getElementById("popover");
     let element =  document.getElementsByClassName('open')[0];
     if (element !== undefined){
