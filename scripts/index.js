@@ -24,8 +24,8 @@ window.addEventListener("load", () => {
     let closeButtonRep = document.getElementById("closeButtonRep");
     closeButtonRep.addEventListener("click", onCloseClicked);
 
-    let checkButton = document.getElementById("checkButton");
-    checkButton.addEventListener("click", onCheckClicked);
+//    let checkButton = document.getElementById("checkButton");
+//    checkButton.addEventListener("click", onCheckClicked);
 });
 let getData = (email) => {
     let database = window.database;
@@ -55,13 +55,17 @@ let generateView = (data) => {
         let size = keyArray.length;
         let rand = Math.floor(Math.random() * size);
         let selectedKey = keyArray[rand];
-        let selectedDay = data[selectedKey].Day;
-        let solved = data[selectedKey].beantwortet;
-        addViewElement(kalender, selectedDay, solved);
+        let selectedData = data[selectedKey];
+
+        addViewElement(kalender, selectedData);
         keyArray.splice(rand, 1);
     }
 };
-let addViewElement = (kalender, day, solved) => {
+let addViewElement = (kalender, selectedData) => {
+    let day = selectedData.Day;
+    let solved = selectedData.beantwortet;
+
+
 
     let sectionWrapper = document.createElement("section");
     sectionWrapper.className = "cube-wrapper col-xs-4 ";
@@ -114,7 +118,18 @@ let addViewElement = (kalender, day, solved) => {
     figurshadow.className = "shadow";
     cubeDiv.appendChild(figurshadow);
 
+    let figureText = document.createElement("figure");
+    figureText.className = "present";
 
+    //let divCoupon = makeCoupon(selectedData);
+
+
+//
+//    divCoupon.appendChild(spanBackSide);
+//    divCoupon.appendChild(spanFrontSide);
+    //figureText.appendChild(divCoupon);
+
+    cubeDiv.appendChild(figureText);
     sectionWrapper.appendChild(cubeDiv);
     /*<section class="cube-wrapper">
      <div class="cube">
@@ -144,6 +159,40 @@ let addViewElement = (kalender, day, solved) => {
 //    iDivDor.appendChild(iDivNumer);
 //    kalender.appendChild(iDivDor);
 };
+let makeCoupon = (selectedData) => {
+    let solved = selectedData.beantwortet;
+    let divCoupon = document.createElement("div");
+    divCoupon.className = "coupon";
+    let spanFrontSide = document.createElement("span");
+    spanFrontSide.className = "coupon-front";
+    if (!solved) {
+        let pQuestion = document.createElement("p");
+        pQuestion.innerHTML = "" + selectedData.Frage;
+        let iAnswer = document.createElement("input");
+        let bCheck = document.createElement("button");
+        bCheck.innerHTML = "Check;)";
+        bCheck.addEventListener("click", onCheckClicked);
+        spanFrontSide.appendChild(pQuestion);
+        spanFrontSide.appendChild(iAnswer);
+        spanFrontSide.appendChild(bCheck);
+        divCoupon.appendChild(spanFrontSide);
+    } else {
+
+    }
+
+    return divCoupon;
+
+
+    /*<div id="AntwortForm">
+     <div class="popupCloseButton" id="closeButton">X</div>
+     <p id="question"></p>
+     <input type="text" id="answer" name="fname"><br>
+     <button  id="checkButton"> Check ;)</button>
+     </div>*/
+
+
+};
+
 let onDoorKlicked = (event) => {
 
     //event.srcElement.classname += " open"
@@ -151,10 +200,9 @@ let onDoorKlicked = (event) => {
     let selectedObject = window.data[selectedId];
     let selectedDay;
     if (selectedObject == null) {
-        
-       selectedDay = event.srcElement.parentElement.children[0].innerHTML;
-    }
-    else{
+
+        selectedDay = event.srcElement.parentElement.children[0].innerHTML;
+    } else {
         window.SelectedObject = selectedObject;
         selectedDay = selectedObject.Day;
     }
@@ -163,9 +211,14 @@ let onDoorKlicked = (event) => {
     currentDay = currentDate.getDate();
 
     if (selectedDay <= currentDay) {
-      
+        // makePopover(selectedObject);
+
         event.srcElement.parentElement.parentElement.classList.toggle("open");
-       // makePopover(selectedObject);
+        setTimeout(function () {
+            makePopover(selectedObject);
+        }, 3000);
+        //;
+
 
 
     } else {
@@ -196,6 +249,7 @@ let makePopover = (selectedObject) => {
 
 let onCloseClicked = () => {
     let popover = document.getElementById("popover");
+    document.getElementsByClassName('open')[0].classList.toggle("open");
     popover.style.display = "none";
 };
 
