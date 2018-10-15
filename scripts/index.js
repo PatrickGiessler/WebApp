@@ -26,9 +26,13 @@ window.addEventListener("load", () => {
     closeButton.addEventListener("click", onCloseClicked);
     let closeButtonRep = document.getElementById("closeButtonRep");
     closeButtonRep.addEventListener("click", onCloseClicked);
+    let backbutton = document.getElementById("zurückButton");
+   backbutton.addEventListener("click", onCloseClicked);
 
    let checkButton = document.getElementById("checkButton");
    checkButton.addEventListener("click", onCheckClicked);
+   
+   
 });
 let getData = (email) => {
     let database = window.database;
