@@ -11,10 +11,13 @@ window.database = firebase.database();
 window.addEventListener("load", () => {
     // Anwendung starten
     let email = window.sessionStorage.getItem("user");
+     let color = window.sessionStorage.getItem("bgCol");
     if (email === null || email === undefined) {
         alert("ups, da ging was schief! bitte nochmals anmelden");
         window.location.href = "./login.html";
     } else {
+        var htmlElement = document.querySelector("body");
+        htmlElement.style.backgroundColor = color;
         getData(email);
     }
 
@@ -30,7 +33,6 @@ window.addEventListener("load", () => {
 let getData = (email) => {
     let database = window.database;
     let ref = database.ref("/users/" + email + "/Days");
-
     ref.on("value", function (snap) {
         generateView(snap.val());
     });

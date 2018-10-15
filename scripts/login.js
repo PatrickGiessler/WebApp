@@ -283,8 +283,10 @@ let onLogInClicked =()=>{
     let ref = database.ref("/users/"+email);
      ref.on("value", function (snap) {
         pw = snap.val().pw;
+        col = snap.val().backgroundCol;
         if (pw === inputPW){
             window.sessionStorage.setItem("user",email);
+            window.sessionStorage.setItem("bgCol",col);
             window.location.href = "./index.html";
         }
         else{
