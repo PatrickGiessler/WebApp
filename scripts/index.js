@@ -12,12 +12,15 @@ window.addEventListener("load", () => {
     // Anwendung starten
     let email = window.sessionStorage.getItem("user");
     let color = window.sessionStorage.getItem("bgCol");
+
+
     if (email === null || email === undefined) {
         alert("ups, da ging was schief! bitte nochmals anmelden");
         window.location.href = "./login.html";
     } else {
         var htmlElement = document.querySelector("body");
         htmlElement.style.backgroundColor = color;
+
         getData(email);
     }
 
@@ -32,9 +35,9 @@ window.addEventListener("load", () => {
     let checkButton = document.getElementById("checkButton");
     checkButton.addEventListener("click", onCheckClicked);
 
-    let inputField =  document.getElementById("answer");
-    inputField.addEventListener("keyup",onInputKeyUp);
-        
+    let inputField = document.getElementById("answer");
+    inputField.addEventListener("keyup", onInputKeyUp);
+
 
 });
 let getData = (email) => {
@@ -70,10 +73,34 @@ let generateView = (data) => {
         keyArray.splice(rand, 1);
     }
 };
+let makeCol = (col, div) => {
+    let aCol = col.slice(4).split(",");
+    let r = aCol[0] * div;
+    let g = aCol[1] * div;
+    let b = (aCol[2].slice(0, aCol[2].length - 1)) * div;
+
+    let retCol = "rgb(" + r + "," + g + "," + b + ")";
+    return retCol;
+
+};
 let addViewElement = (kalender, selectedData) => {
     let day = selectedData.Day;
     let solved = selectedData.beantwortet;
+    let col = window.sessionStorage.getItem("cubRGB");
+    let colSolv = window.sessionStorage.getItem("cubRGBSolv");
+    let cubCol = "";
+    let cubColDark = "";
+    let cubColDarker = "";
 
+    if (solved) {
+        cubCol = makeCol(colSolv, 1);
+        cubColDark = makeCol(colSolv, (2 / 3));
+        cubColDarker = makeCol(colSolv, (1 / 2));
+    } else {
+        cubCol = makeCol(col, 1);
+        cubColDark = makeCol(col, (2 / 3));
+        cubColDarker = makeCol(col, (1 / 2));
+    }
 
 
     let sectionWrapper = document.createElement("section");
@@ -86,19 +113,24 @@ let addViewElement = (kalender, selectedData) => {
     let figurFront = document.createElement("figure");
     figurFront.className = "front";
     figurFront.innerHTML = "" + day;
+    figurFront.style.backgroundColor = cubColDark;
     cubeDiv.appendChild(figurFront);
 
     let figurback = document.createElement("figure");
     figurback.className = "back";
+    figurback.style.backgroundColor = cubColDark;
     cubeDiv.appendChild(figurback);
+
 
     let figurright = document.createElement("figure");
     figurright.className = "right";
+    figurright.style.backgroundColor = cubColDarker;
     cubeDiv.appendChild(figurright);
 
     let figurleft = document.createElement("figure");
     figurleft.className = "left";
     figurleft.innerHTML = "" + day;
+    figurleft.style.backgroundColor = cubCol;
     cubeDiv.appendChild(figurleft);
 
     let figurtop = document.createElement("figure");
@@ -106,12 +138,19 @@ let addViewElement = (kalender, selectedData) => {
 
     let lowerLeft = document.createElement("div");
     lowerLeft.className = "lower lower-left";
+    lowerLeft.style.backgroundColor = cubColDark;
+
     let lowerRight = document.createElement("div");
     lowerRight.className = "lower lower-right";
+    lowerRight.style.backgroundColor = cubCol;
+
     let upperLeft = document.createElement("div");
     upperLeft.className = "upper upper-left";
+    upperLeft.style.backgroundColor = cubCol;
+
     let upperRight = document.createElement("div");
     upperRight.className = "upper upper-right";
+    upperRight.style.backgroundColor = cubColDark;
     figurtop.appendChild(lowerLeft);
     figurtop.appendChild(lowerRight);
     figurtop.appendChild(upperLeft);
@@ -121,7 +160,9 @@ let addViewElement = (kalender, selectedData) => {
 
     let figurbottom = document.createElement("figure");
     figurbottom.className = "bottom";
+    figurbottom.style.backgroundColor = cubColDarker;
     cubeDiv.appendChild(figurbottom);
+
 
     let figurshadow = document.createElement("figure");
     figurshadow.className = "shadow";
@@ -257,20 +298,20 @@ let makePopover = (selectedObject) => {
 
 };
 
-let onInputKeyUp = (event)=>{
+let onInputKeyUp = (event) => {
     event.preventDefault();
-  // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    // Trigger the button element with a click
-    document.getElementById("checkButton").click();
-  }
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+        // Trigger the button element with a click
+        document.getElementById("checkButton").click();
+    }
 };
 
 
 let onCloseClicked = (event) => {
     let popover = document.getElementById("popover");
-    let element =  document.getElementsByClassName('open')[0];
-    if (element !== undefined){
+    let element = document.getElementsByClassName('open')[0];
+    if (element !== undefined) {
         document.getElementsByClassName('open')[0].classList.toggle("open");
     }
     popover.style.display = "none";
@@ -281,7 +322,7 @@ let onCheckClicked = (event) => {
     let answer = input.value;
     let selectedObject = window.SelectedObject;
     let database = window.database;
-    
+
 
     if (answer.toLowerCase() === selectedObject.Antwort.toLowerCase()) {
         event.srcElement.className = "right";
@@ -295,7 +336,7 @@ let onCheckClicked = (event) => {
             window.location.href = "./login.html";
         } else {
             let path = "/users/" + email + "/Days/Day" + day;
-            
+
 
             database.ref(path).set({
                 Antwort: SelectedObject.Antwort,
@@ -304,19 +345,19 @@ let onCheckClicked = (event) => {
                 beantwortet: true,
                 Response: SelectedObject.Response
             });
-            
+
             setTimeout(function () {
-            let popoverQuest = document.getElementById("AntwortForm");
-            let popoverResp = document.getElementById("ResponseForm");
-            let image = document.getElementById("RespImage");
-            image.src = SelectedObject.Response;
-            popoverQuest.style.display = "none";
-            popoverResp.style.display = "";
-            //clear input
-            input.value = "";
-            
+                let popoverQuest = document.getElementById("AntwortForm");
+                let popoverResp = document.getElementById("ResponseForm");
+                let image = document.getElementById("RespImage");
+                image.src = SelectedObject.Response;
+                popoverQuest.style.display = "none";
+                popoverResp.style.display = "";
+                //clear input
+                input.value = "";
+
             }, 1000);
-            
+
 
 
 

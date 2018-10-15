@@ -287,13 +287,17 @@ let onLogInClicked =(event)=>{
      ref.on("value", function (snap) {
         pw = snap.val().pw;
         col = snap.val().backgroundCol;
+        cubRGB = snap.val().cubCol;
+        cubRGBSolv=  snap.val().cubColSolved;
         if (pw === inputPW){
             window.sessionStorage.setItem("user",email);
             window.sessionStorage.setItem("bgCol",col);
+            window.sessionStorage.setItem("cubRGB",cubRGB);
+            window.sessionStorage.setItem("cubRGBSolv",cubRGBSolv);
             window.location.href = "./index.html";
         }
         else{
-            alert("E-Mail der Passwort falsch");
+            alert("E-Mail oder Passwort falsch");
         }
     });
     
