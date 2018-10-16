@@ -15,7 +15,7 @@
   font-size: 1em !important;
 }
 
-#lösungButton{
+#solutionButton{
   float: right;
   width: 40%;
   font-size: 1em !important;
@@ -27,7 +27,6 @@
 
 .hover_bkgr_fricc{
     background:rgba(0,0,0,.4);
-    cursor:pointer;
     display:none;
     height:100%;
     position:fixed;

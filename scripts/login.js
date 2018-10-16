@@ -42,9 +42,9 @@ window.addEventListener("load", () => {
     window.earHairL = document.querySelector('.earL .earHair');
     window.earHairR = document.querySelector('.earR .earHair');
     window.hair = document.querySelector('.hair');
-    
-    let loginButtom = document.getElementById("login");
-    loginButtom.addEventListener("click", onLogInClicked);
+
+    let loginButton = document.getElementById("login");
+    loginButton.addEventListener("click", onLogInClicked);
 
 
     window.caretPos;
@@ -70,8 +70,8 @@ window.addEventListener("load", () => {
      window.password.addEventListener('keyup', onInputKeyUp);
     TweenMax.set(window.armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
     TweenMax.set(window.armR, {x: -93, y: 220, rotation: -105, transformOrigin: "top right"});
-    
-    
+
+
 });
 
 
@@ -82,7 +82,7 @@ function getCoord(e) {
             span = document.createElement('span'),
             copyStyle = getComputedStyle(window.email),
             emailCoords = {},
-            caretCoords = {}, 
+            caretCoords = {},
             centerCoords = {}
     ;
     [].forEach.call(copyStyle, function (prop) {
@@ -278,10 +278,10 @@ let onLogInClicked =(event)=>{
     let email = window.email.value;
     let inputPW =   window.password.value;
     let pw = "";
-    
-    
-    email = email.substr(0, email.indexOf('@')); 
-    
+
+
+    email = email.substr(0, email.indexOf('@'));
+
     let database = window.database;
     let ref = database.ref("/users/"+email);
      ref.on("value", function (snap) {
@@ -300,7 +300,7 @@ let onLogInClicked =(event)=>{
             alert("E-Mail oder Passwort falsch");
         }
     });
-    
+
 };
 let onInputKeyUp = (event)=>{
     event.preventDefault();
@@ -310,4 +310,3 @@ let onInputKeyUp = (event)=>{
     document.getElementById("login").click();
   }
 };
-

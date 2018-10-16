@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 
 
     if (email === null || email === undefined) {
-        alert("ups, da ging was schief! bitte nochmals anmelden");
+        alert("Ups, da ging leider etwas schief! Bitte melde dich nochmal an!");
         window.location.href = "./login.html";
     } else {
         var htmlElement = document.querySelector("body");
@@ -37,6 +37,13 @@ window.addEventListener("load", () => {
 
     let inputField = document.getElementById("answer");
     inputField.addEventListener("keyup", onInputKeyUp);
+
+    let solutionButton = document.getElementById("solutionButton");
+    solutionButton.addEventListener("click", onSwitchSolutionClicked);
+    let switchsolutionButton = document.getElementById("switchsolutionButton");
+    switchsolutionButton.addEventListener("click", onSwitchSolutionClicked);
+
+
 
 
 });
@@ -273,7 +280,7 @@ let onDoorKlicked = (event) => {
 
 
     } else {
-        alert("nicht so hastig");
+        alert("Leider musst du dich für dieses Rätsel noch gedulden!");
     }
 };
 
@@ -315,6 +322,10 @@ let onCloseClicked = (event) => {
         document.getElementsByClassName('open')[0].classList.toggle("open");
     }
     popover.style.display = "none";
+};
+
+let onSwitchSolutionClicked = (event) => {
+    window.location.href = "./solution.html";
 };
 
 let onCheckClicked = (event) => {
