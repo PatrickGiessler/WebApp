@@ -1,0 +1,38 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 16.10.2018, 16:26:18
+    Author     : PatrickGießler
+*/
+
+img{
+    display: block;
+    position: relative;
+    width: 50%;
+    height: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -1;
+    
+    
+}
+table{
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url('../imasche/Okapi2.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+td{
+    border: lightblue solid 2px;
+    
+    
+}
+tr{
+    
+}
