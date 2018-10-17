@@ -74,7 +74,7 @@ let callBackOnload = (event) => {
         srcElement: window
     };
      createView(window.colCount, window.rowCount);
-   // onImgResize(fakeelement);
+    onImgResize(fakeelement);
     window.addEventListener('resize', onImgResize);
 
     //new ResizeObserver(onImgResize).observe(table);
