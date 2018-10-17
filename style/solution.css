@@ -7,6 +7,46 @@ and open the template in the editor.
     Created on : 16.10.2018, 16:26:18
     Author     : PatrickGießler
 */
+@keyframes snow{
+    0%{
+        background-position:0 0
+    }
+    100%{
+        background-position:500px 1000px,400px 400px,300px 300px
+    }
+}
+@-moz-keyframes snow{
+    0%{
+        background-position:0 0
+    }
+    100%{
+        background-position:500px 1000px,400px 400px,300px 300px
+    }
+}
+@-webkit-keyframes snow{
+    0%{
+        background-position:0 0
+    }
+    100%{
+        background-position:500px 1000px,400px 400px,300px 300px
+    }
+}
+@-ms-keyframes snow{
+    0%{
+        background-position:0 0
+    }
+    100%{
+        background-position:500px 1000px,400px 400px,300px 300px
+    }
+}
+body{
+    background-color: lightblue !important;
+    background-image: url('../pictures/snow1.png'), url('../pictures/snow2.png'), url('../pictures/snow3.png');
+    -webkit-animation:snow 20s linear infinite;
+    -moz-animation:snow 20s linear infinite;
+    -ms-animation:snow 20s linear infinite;
+    animation:snow 20s linear infinite;
+}
 
 img{
     display: block;
