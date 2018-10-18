@@ -17,15 +17,23 @@ window.addEventListener("load", () => {
     window.colCount = 15;
 
 
+
     let email = window.sessionStorage.getItem("user");
-    let color = window.sessionStorage.getItem("bgCol");
-    let sUrl = getImageUrl();
-    let size = getImageSize(sUrl);
-   
-    let switchcalendarButton = document.getElementById("switchcalendarButton");
-    var img = new Image();
-    img.onload = callBackOnload;
-    img.src = sUrl;
+    //let color = window.sessionStorage.getItem("bgCol");
+
+
+    if (email === null || email === undefined) {
+        alert("Ups, da ging leider etwas schief! Bitte melde dich nochmal an!");
+        window.location.href = "./login.html";
+    } else {
+        makeBgImage();
+
+    }
+
+
+
+
+
     switchcalendarButton.addEventListener("click", onSwitchCalendarClicked);
 
 });
@@ -55,7 +63,7 @@ let createView = (countCol, countRow) => {
         for (let j = 0; j < countCol; j++) {
             let td = document.createElement("td");
             if (i === countCol - 1) {
-               td.style.width = (widthPerColRound + rowDif) + "px";
+                td.style.width = (widthPerColRound + rowDif) + "px";
             } else {
                 td.style.width = widthPerColRound + "px";
             }
@@ -73,7 +81,7 @@ let callBackOnload = (event) => {
     let fakeelement = {
         srcElement: window
     };
-     createView(window.colCount, window.rowCount);
+    createView(window.colCount, window.rowCount);
     onImgResize(fakeelement);
     window.addEventListener('resize', onImgResize);
 
@@ -82,23 +90,23 @@ let callBackOnload = (event) => {
 let onImgResize = (event) => {
 
     let width = window.getComputedStyle(document.getElementById("table")).width;
-    width = width.slice(0,width.length - 2);
+    width = width.slice(0, width.length - 2);
     let widthPerCol = width / window.colCount;
     let widthPerColRound = Math.round(widthPerCol);
     let colDif = width - (widthPerColRound * window.colCount);
 
 
 
-//    let allTd = document.getElementsByTagName("td");
-//    for (let i = 0; i < allTd.length; i++) {
-//        if (i === allTd.length - 1) {
-//            allTd[i].style.width = (widthPerColRound + colDif) + "px";
-//        } else {
-//            allTd[i].style.width = widthPerColRound + "px";
-//        }
-//
-//
-//    }
+    let allTd = document.getElementsByTagName("td");
+    for (let i = 0; i < allTd.length; i++) {
+        if (i === allTd.length - 1) {
+            allTd[i].style.width = (widthPerColRound + colDif) + "px";
+        } else {
+            allTd[i].style.width = widthPerColRound + "px";
+        }
+
+
+    }
     let height = Math.round(width / window.ratio);
     let heightPerCol = height / window.rowCount;
     let heightPerColRound = Math.round(heightPerCol);
@@ -117,24 +125,24 @@ let onImgResize = (event) => {
 
 };
 
-let getImageUrl = () => {
+let makeBgImage = () => {
     let oTable = document.getElementById("table");
-    let sUrl = window.getComputedStyle(oTable, false).backgroundImage;
-    sUrl = sUrl.slice(4, -1).replace(/"/g, "");
-    return sUrl;
-};
+    let email = window.sessionStorage.getItem("user");
 
-let getImageSize = (sUrl) => {
-    //let img = new Image(sUrl);
-    let img = document.createElement("img");
-    img.src = sUrl;
-    let width = img.naturalWidth;
-    let height = img.naturalHeight;
-    let aSize = [width, height];
+    let database = window.database;
+    let ref = database.ref("/users/" + email);
+    ref.on("value", function (snap) {
+        let sUrl = snap.val().SolPic;
+        let sUrlForBg = "url(" + sUrl + ")"
+        oTable.style.backgroundImage = sUrlForBg;
+        
+        var img = new Image();
+        img.onload = callBackOnload;
+        img.src = sUrl;
+       
+    });
 
 
-
-    return aSize;
 };
 let onSwitchCalendarClicked = (event) => {
     window.location.href = "./index.html";
