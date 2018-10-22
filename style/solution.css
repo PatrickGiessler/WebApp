@@ -68,12 +68,15 @@ table{
     background-size: contain;
 }
 td{
-    border: lightblue solid 2px;
+    
 
 
 }
 tr{
 
+}
+.noBackground{
+    background: none;
 }
 
 h1 {

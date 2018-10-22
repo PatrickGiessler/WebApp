@@ -80,7 +80,7 @@ let makeSolutionVisible=()=>{
     let database = window.database;
     let ref = database.ref("/users/" + window.email + "/Days");
     ref.on("value", function (snap) {
-     
+    let i = 0; 
     let sollutionArray =[];
 //    for (let i = 0; snap.val().lengt;i++){
 //        if(snap.val().beantwortet === true){
@@ -92,9 +92,21 @@ let makeSolutionVisible=()=>{
     for (let key in snap.val()){
         if(snap.val()[key].beantwortet === true){
             let td = document.getElementById(snap.val()[key].SolID);
-            td.style.background ="none"
+            td.classList.add("noBackground");
        }
+       i++;
     }
+    
+    //just for debug
+   // i=24;
+    if(i===24){
+        let allTd = document.getElementsByTagName("td");
+        for (let j=0; j<allTd.length;j++){
+            allTd[j].classList.add("noBackground");
+        }
+    }
+    
+    
     });
     
 };

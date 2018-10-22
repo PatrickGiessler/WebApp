@@ -183,81 +183,12 @@ let addViewElement = (kalender, selectedData) => {
     let figureText = document.createElement("figure");
     figureText.className = "present";
 
-    //let divCoupon = makeCoupon(selectedData);
-
-
-//
-//    divCoupon.appendChild(spanBackSide);
-//    divCoupon.appendChild(spanFrontSide);
-    //figureText.appendChild(divCoupon);
-
     cubeDiv.appendChild(figureText);
     cubeDiv1.appendChild(cubeDiv);
     sectionWrapper.appendChild(cubeDiv1);
-    /*<section class="cube-wrapper">
-     <div class="cube">
-     <figure class="front"></figure>
-     <figure class="back"></figure>
-     <figure class="right"></figure>
-     <figure class="left"></figure>
-     <figure class="top"></figure>
-     <figure class="bottom"></figure>
-     <figure class="shadow"></figure>
-     </div>
-     </section> */
+
     kalender.appendChild(sectionWrapper);
-//
-//
-//
-//    let iDivDor = document.createElement("div");
-//    iDivDor.className = 'dors col-xs-4';
-//    iDivDor.addEventListener("click", onDoorKlicked);
-//    if (solved) {
-//        iDivDor.className += " makeItGreen";
-//    }
-//    //iDivDor.className = 'tuerchen';
-//    let iDivNumer = document.createElement("div");
-//    iDivNumer.className = "number";
-//    iDivNumer.innerHTML = "" + day;
-//    iDivDor.appendChild(iDivNumer);
-//    kalender.appendChild(iDivDor);
 };
-let makeCoupon = (selectedData) => {
-    let solved = selectedData.beantwortet;
-    let divCoupon = document.createElement("div");
-    divCoupon.className = "coupon";
-    let spanFrontSide = document.createElement("span");
-    spanFrontSide.className = "coupon-front";
-    if (!solved) {
-        let pQuestion = document.createElement("p");
-        pQuestion.innerHTML = "" + selectedData.Frage;
-        let iAnswer = document.createElement("input");
-        let bCheck = document.createElement("button");
-        bCheck.innerHTML = "Check;)";
-        bCheck.addEventListener("click", onCheckClicked);
-        spanFrontSide.appendChild(pQuestion);
-        spanFrontSide.appendChild(iAnswer);
-        spanFrontSide.appendChild(bCheck);
-        divCoupon.appendChild(spanFrontSide);
-    } else {
-
-    }
-
-    return divCoupon;
-
-
-    /*<div id="AntwortForm">
-     <div class="popupCloseButton" id="closeButton">X</div>
-     <p id="question"></p>
-     <input type="text" id="answer" name="fname"><br>
-     <button  id="checkButton"> Check ;)</button>
-     </div>*/
-
-
-};
-
-
-
 let onDoorKlicked = (event) => {
 
     //event.srcElement.classname += " open"
@@ -265,7 +196,7 @@ let onDoorKlicked = (event) => {
     let selectedObject = window.data[selectedId];
     let selectedDay;
     document.getElementById("checkButton").classList.remove("right");
-    if (selectedObject == null) {
+    if (selectedObject === null) {
 
         selectedDay = event.srcElement.parentElement.children[0].innerHTML;
     } else {
@@ -390,6 +321,3 @@ let onCheckClicked = (event) => {
     }
 
 };
-let showSolution = () => {
-    let selectedObject = window.SelectedObject;
-}
