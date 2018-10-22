@@ -25,12 +25,15 @@ window.addEventListener("load", () => {
         window.location.href = "./login.html";
     } else {
         let htmlElement = document.querySelector("body");
-        htmlElement.style.backgroundColor =  window.color;
+        htmlElement.style.backgroundColor = window.color;
         makeBgImage();
 
     }
     let switchcalendarButton = document.getElementById("switchcalendarButton");
     switchcalendarButton.addEventListener("click", onSwitchCalendarClicked);
+    document.addEventListener("DOMContentLoaded", function () {
+        alert("reday");
+    });
 
 });
 let createView = (countCol, countRow) => {
@@ -51,64 +54,93 @@ let createView = (countCol, countRow) => {
     for (let i = 0; i < countRow; i++) {
 
         let tr = document.createElement("tr");
-       
+        let height = 0;
+
         if (i === countRow - 1) {
-            tr.style.height = (heightPerColRound + rowDif) + "px";
+            height = (heightPerColRound + rowDif) + "px";
+
         } else {
-            tr.style.height = heightPerColRound + "px";
+            height = heightPerColRound + "px";
         }
+        tr.style.height = height;
         for (let j = 0; j < countCol; j++) {
             let td = document.createElement("td");
-            let tdID = (i+1) + "_" + (j+1);
+            let tdID = (i + 1) + "_" + (j + 1);
             td.bgColor = window.color;
             td.id = tdID;
             if (i === countCol - 1) {
                 td.style.width = (widthPerColRound + rowDif) + "px";
+                td.style.height = height;
             } else {
                 td.style.width = widthPerColRound + "px";
+                td.style.height = height;
             }
+
+            td.classList.add("flip-container");
+            let divFlipper = document.createElement("div");
+            divFlipper.classList.add("flipper");
+            let divFront = document.createElement("div");
+            divFront.classList.add("front");
+            divFront.style.backgroundColor = window.color;
+
+            let divBack = document.createElement("div");
+            divBack.classList.add("back");
+            divBack.classList.add("noBackground");
+
+            divFlipper.appendChild(divFront);
+            divFlipper.appendChild(divBack);
+
+
+            td.appendChild(divFlipper);
+
             tr.appendChild(td);
         }
         table.appendChild(tr);
-        
+
     }
     makeSolutionVisible();
 
 };
 
-let makeSolutionVisible=()=>{
+let makeSolutionVisible = () => {
     let database = window.database;
     let ref = database.ref("/users/" + window.email + "/Days");
     ref.on("value", function (snap) {
-    let i = 0; 
-    let sollutionArray =[];
-//    for (let i = 0; snap.val().lengt;i++){
-//        if(snap.val().beantwortet === true){
-//            let td = document.getElementById(data[0].SolID);
-//            td.bgcolor ="none";
-//        }
-//    } 
-//    
-    for (let key in snap.val()){
-        if(snap.val()[key].beantwortet === true){
-            let td = document.getElementById(snap.val()[key].SolID);
-            td.classList.add("noBackground");
-       }
-       i++;
-    }
-    
-    //just for debug
-   // i=24;
-    if(i===24){
-        let allTd = document.getElementsByTagName("td");
-        for (let j=0; j<allTd.length;j++){
-            allTd[j].classList.add("noBackground");
+        let i = 0;
+        let sollutionArray = [];
+        for (let key in snap.val()) {
+            if (snap.val()[key].beantwortet === true) {
+                let td = document.getElementById(snap.val()[key].SolID);
+                //td.classList.add("noBackground");
+                if (td !== undefined && td !== null) {
+
+                    td.firstElementChild.classList.toggle("flipped");
+
+
+                }
+
+                i++;
+            }
+
         }
-    }
-    
-    
+
+        //just for debug
+        i = 24;
+        if (i === 24) {
+            let allTd = document.getElementsByTagName("td");
+            for (let j = 0; j < allTd.length; j++) {
+                if (allTd[j].firstElementChild.classList.contains("flipped")) {
+
+                } else {
+                    allTd[j].firstElementChild.classList.add("flipped");
+                }
+
+            }
+        }
+
+
     });
-    
+
 };
 
 let callBackOnload = (event) => {
@@ -132,19 +164,8 @@ let onImgResize = (event) => {
     let widthPerColRound = Math.round(widthPerCol);
     let colDif = width - (widthPerColRound * window.colCount);
 
-
-
-    let allTd = document.getElementsByTagName("td");
-    for (let i = 0; i < allTd.length; i++) {
-        if (i === allTd.length - 1) {
-            allTd[i].style.width = (widthPerColRound + colDif) + "px";
-        } else {
-            allTd[i].style.width = widthPerColRound + "px";
-        }
-
-
-    }
     let height = Math.round(width / window.ratio);
+    let calcHeight = height;
     let heightPerCol = height / window.rowCount;
     let heightPerColRound = Math.round(heightPerCol);
     let rowDif = height - (heightPerColRound * window.rowCount);
@@ -152,19 +173,36 @@ let onImgResize = (event) => {
     let allTr = document.getElementsByTagName("tr");
     for (let i = 0; i < allTr.length; i++) {
         if (i === allTr.length - 1) {
-            allTr[i].style.height = (heightPerColRound + rowDif) + "px";
+            calcHeight = (heightPerColRound + rowDif) + "px";
+            allTr[i].style.height = calcHeight;
+
         } else {
-            allTr[i].style.height = heightPerColRound + "px";
+            calcHeight = heightPerColRound + "px";
+            allTr[i].style.height = calcHeight;
         }
 
 
     }
 
+    let allTd = document.getElementsByTagName("td");
+    for (let i = 0; i < allTd.length; i++) {
+        if (i === allTd.length - 1) {
+            allTd[i].style.width = (widthPerColRound + colDif) + "px";
+            allTd[i].style.height = calcHeight;
+        } else {
+            allTd[i].style.width = widthPerColRound + "px";
+            allTd[i].style.height = calcHeight;
+        }
+
+
+    }
+
+
 };
 
 let makeBgImage = () => {
     let oTable = document.getElementById("table");
-    
+
 
     let database = window.database;
     let ref = database.ref("/users/" + window.email);
@@ -172,11 +210,11 @@ let makeBgImage = () => {
         let sUrl = snap.val().SolPic;
         let sUrlForBg = "url(" + sUrl + ")"
         oTable.style.backgroundImage = sUrlForBg;
-        
+
         var img = new Image();
         img.onload = callBackOnload;
         img.src = sUrl;
-       
+
     });
 
 
@@ -185,6 +223,6 @@ let onSwitchCalendarClicked = (event) => {
     window.location.href = "./index.html";
 };
 
-let getSolIDs =()=>{
-    
+let getSolIDs = () => {
+
 };

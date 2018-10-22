@@ -67,8 +67,8 @@ table{
     background-repeat: no-repeat;
     background-size: contain;
 }
-td{
-    
+.cont{
+    width: 100%;
 
 
 }
