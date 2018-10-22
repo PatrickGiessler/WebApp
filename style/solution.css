@@ -40,7 +40,6 @@ and open the template in the editor.
     }
 }
 body{
-    background-color: lightblue !important;
     background-image: url('../pictures/snow1.png'), url('../pictures/snow2.png'), url('../pictures/snow3.png');
     -webkit-animation:snow 20s linear infinite;
     -moz-animation:snow 20s linear infinite;

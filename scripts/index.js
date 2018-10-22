@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
         alert("Ups, da ging leider etwas schief! Bitte melde dich nochmal an!");
         window.location.href = "./login.html";
     } else {
-        var htmlElement = document.querySelector("body");
+        let htmlElement = document.querySelector("body");
         htmlElement.style.backgroundColor = color;
 
         getData(email);
@@ -52,6 +52,7 @@ let getData = (email) => {
     let ref = database.ref("/users/" + email + "/Days");
     ref.on("value", function (snap) {
         generateView(snap.val());
+        
     });
 };
 
@@ -61,9 +62,7 @@ let generateView = (data) => {
     //clear for live change in Database
     kalender.innerHTML = "";
     let key;
-
-// i++ (Inkrement), ist dasselbe wie i = i + 1
-    let keyArray = [];
+   let keyArray = [];
     //console.log(i);
     for (key in data) {
         keyArray.push(key);
@@ -111,8 +110,14 @@ let addViewElement = (kalender, selectedData) => {
 
 
     let sectionWrapper = document.createElement("section");
-    sectionWrapper.className = "cube-wrapper col-xs-4 ";
+    
+    sectionWrapper.className = "col-xs-4 ";
     sectionWrapper.addEventListener("click", onDoorKlicked);
+    
+       let cubeDiv1 = document.createElement("div");
+    cubeDiv1.className = "cube-wrapper";
+    sectionWrapper.appendChild(cubeDiv1);
+
 
     let cubeDiv = document.createElement("div");
     cubeDiv.className = "cube";
@@ -187,7 +192,8 @@ let addViewElement = (kalender, selectedData) => {
     //figureText.appendChild(divCoupon);
 
     cubeDiv.appendChild(figureText);
-    sectionWrapper.appendChild(cubeDiv);
+    cubeDiv1.appendChild(cubeDiv);
+    sectionWrapper.appendChild(cubeDiv1);
     /*<section class="cube-wrapper">
      <div class="cube">
      <figure class="front"></figure>
@@ -250,6 +256,8 @@ let makeCoupon = (selectedData) => {
 
 };
 
+
+
 let onDoorKlicked = (event) => {
 
     //event.srcElement.classname += " open"
@@ -283,7 +291,6 @@ let onDoorKlicked = (event) => {
         alert("Leider musst du dich für dieses Rätsel noch gedulden!");
     }
 };
-
 let makePopover = (selectedObject) => {
     let popover = document.getElementById("popover");
     let popoverQuest = document.getElementById("AntwortForm");
@@ -292,7 +299,7 @@ let makePopover = (selectedObject) => {
     popover.style.display = "block";
     if (SelectedObject.beantwortet) {
         let image = document.getElementById("RespImage");
-        image.src = selectedObject.Response;
+        image.src = selectedObject.ResponsePic;
         popoverQuest.style.display = "none";
         popoverResp.style.display = "";
 
@@ -304,6 +311,7 @@ let makePopover = (selectedObject) => {
     }
 
 };
+
 
 let onInputKeyUp = (event) => {
     event.preventDefault();
@@ -354,14 +362,16 @@ let onCheckClicked = (event) => {
                 Day: day,
                 Frage: SelectedObject.Frage,
                 beantwortet: true,
-                Response: SelectedObject.Response
+                ResponsePic: SelectedObject.ResponsePic,
+                SolID: SelectedObject.SolID,
+                ResponseTxt:SelectedObject.ResponseTxt
             });
 
             setTimeout(function () {
                 let popoverQuest = document.getElementById("AntwortForm");
                 let popoverResp = document.getElementById("ResponseForm");
                 let image = document.getElementById("RespImage");
-                image.src = SelectedObject.Response;
+                image.src = SelectedObject.ResponsePic;
                 popoverQuest.style.display = "none";
                 popoverResp.style.display = "";
                 //clear input

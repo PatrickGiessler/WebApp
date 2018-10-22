@@ -16,24 +16,20 @@ window.addEventListener("load", () => {
     window.rowCount = 15;
     window.colCount = 15;
 
+    window.email = window.sessionStorage.getItem("user");
+    window.color = window.sessionStorage.getItem("bgCol");
 
 
-    let email = window.sessionStorage.getItem("user");
-    //let color = window.sessionStorage.getItem("bgCol");
-
-
-    if (email === null || email === undefined) {
+    if (window.email === null || window.email === undefined) {
         alert("Ups, da ging leider etwas schief! Bitte melde dich nochmal an!");
         window.location.href = "./login.html";
     } else {
+        let htmlElement = document.querySelector("body");
+        htmlElement.style.backgroundColor =  window.color;
         makeBgImage();
 
     }
-
-
-
-
-
+    let switchcalendarButton = document.getElementById("switchcalendarButton");
     switchcalendarButton.addEventListener("click", onSwitchCalendarClicked);
 
 });
@@ -55,6 +51,7 @@ let createView = (countCol, countRow) => {
     for (let i = 0; i < countRow; i++) {
 
         let tr = document.createElement("tr");
+       
         if (i === countRow - 1) {
             tr.style.height = (heightPerColRound + rowDif) + "px";
         } else {
@@ -62,6 +59,9 @@ let createView = (countCol, countRow) => {
         }
         for (let j = 0; j < countCol; j++) {
             let td = document.createElement("td");
+            let tdID = (i+1) + "_" + (j+1);
+            td.bgColor = window.color;
+            td.id = tdID;
             if (i === countCol - 1) {
                 td.style.width = (widthPerColRound + rowDif) + "px";
             } else {
@@ -70,10 +70,35 @@ let createView = (countCol, countRow) => {
             tr.appendChild(td);
         }
         table.appendChild(tr);
-        console.log(i);
+        
     }
+    makeSolutionVisible();
 
 };
+
+let makeSolutionVisible=()=>{
+    let database = window.database;
+    let ref = database.ref("/users/" + window.email + "/Days");
+    ref.on("value", function (snap) {
+     
+    let sollutionArray =[];
+//    for (let i = 0; snap.val().lengt;i++){
+//        if(snap.val().beantwortet === true){
+//            let td = document.getElementById(data[0].SolID);
+//            td.bgcolor ="none";
+//        }
+//    } 
+//    
+    for (let key in snap.val()){
+        if(snap.val()[key].beantwortet === true){
+            let td = document.getElementById(snap.val()[key].SolID);
+            td.style.background ="none"
+       }
+    }
+    });
+    
+};
+
 let callBackOnload = (event) => {
     //alert("test");
     window.ratio = event.srcElement.naturalWidth / event.srcElement.naturalHeight;
@@ -127,10 +152,10 @@ let onImgResize = (event) => {
 
 let makeBgImage = () => {
     let oTable = document.getElementById("table");
-    let email = window.sessionStorage.getItem("user");
+    
 
     let database = window.database;
-    let ref = database.ref("/users/" + email);
+    let ref = database.ref("/users/" + window.email);
     ref.on("value", function (snap) {
         let sUrl = snap.val().SolPic;
         let sUrlForBg = "url(" + sUrl + ")"
@@ -146,4 +171,8 @@ let makeBgImage = () => {
 };
 let onSwitchCalendarClicked = (event) => {
     window.location.href = "./index.html";
+};
+
+let getSolIDs =()=>{
+    
 };
