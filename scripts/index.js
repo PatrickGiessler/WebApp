@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
         alert("Ups, da ging leider etwas schief! Bitte melde dich nochmal an!");
         window.location.href = "./login.html";
     } else {
-        var htmlElement = document.querySelector("body");
+        let htmlElement = document.querySelector("body");
         htmlElement.style.backgroundColor = color;
 
         getData(email);
@@ -52,6 +52,7 @@ let getData = (email) => {
     let ref = database.ref("/users/" + email + "/Days");
     ref.on("value", function (snap) {
         generateView(snap.val());
+        
     });
 };
 
@@ -61,9 +62,7 @@ let generateView = (data) => {
     //clear for live change in Database
     kalender.innerHTML = "";
     let key;
-
-// i++ (Inkrement), ist dasselbe wie i = i + 1
-    let keyArray = [];
+   let keyArray = [];
     //console.log(i);
     for (key in data) {
         keyArray.push(key);
@@ -111,8 +110,14 @@ let addViewElement = (kalender, selectedData) => {
 
 
     let sectionWrapper = document.createElement("section");
-    sectionWrapper.className = "cube-wrapper col-xs-4 ";
+    
+    sectionWrapper.className = "col-xs-4 ";
     sectionWrapper.addEventListener("click", onDoorKlicked);
+    
+       let cubeDiv1 = document.createElement("div");
+    cubeDiv1.className = "cube-wrapper";
+    sectionWrapper.appendChild(cubeDiv1);
+
 
     let cubeDiv = document.createElement("div");
     cubeDiv.className = "cube";
@@ -178,78 +183,12 @@ let addViewElement = (kalender, selectedData) => {
     let figureText = document.createElement("figure");
     figureText.className = "present";
 
-    //let divCoupon = makeCoupon(selectedData);
-
-
-//
-//    divCoupon.appendChild(spanBackSide);
-//    divCoupon.appendChild(spanFrontSide);
-    //figureText.appendChild(divCoupon);
-
     cubeDiv.appendChild(figureText);
-    sectionWrapper.appendChild(cubeDiv);
-    /*<section class="cube-wrapper">
-     <div class="cube">
-     <figure class="front"></figure>
-     <figure class="back"></figure>
-     <figure class="right"></figure>
-     <figure class="left"></figure>
-     <figure class="top"></figure>
-     <figure class="bottom"></figure>
-     <figure class="shadow"></figure>
-     </div>
-     </section> */
+    cubeDiv1.appendChild(cubeDiv);
+    sectionWrapper.appendChild(cubeDiv1);
+
     kalender.appendChild(sectionWrapper);
-//
-//
-//
-//    let iDivDor = document.createElement("div");
-//    iDivDor.className = 'dors col-xs-4';
-//    iDivDor.addEventListener("click", onDoorKlicked);
-//    if (solved) {
-//        iDivDor.className += " makeItGreen";
-//    }
-//    //iDivDor.className = 'tuerchen';
-//    let iDivNumer = document.createElement("div");
-//    iDivNumer.className = "number";
-//    iDivNumer.innerHTML = "" + day;
-//    iDivDor.appendChild(iDivNumer);
-//    kalender.appendChild(iDivDor);
 };
-let makeCoupon = (selectedData) => {
-    let solved = selectedData.beantwortet;
-    let divCoupon = document.createElement("div");
-    divCoupon.className = "coupon";
-    let spanFrontSide = document.createElement("span");
-    spanFrontSide.className = "coupon-front";
-    if (!solved) {
-        let pQuestion = document.createElement("p");
-        pQuestion.innerHTML = "" + selectedData.Frage;
-        let iAnswer = document.createElement("input");
-        let bCheck = document.createElement("button");
-        bCheck.innerHTML = "Check;)";
-        bCheck.addEventListener("click", onCheckClicked);
-        spanFrontSide.appendChild(pQuestion);
-        spanFrontSide.appendChild(iAnswer);
-        spanFrontSide.appendChild(bCheck);
-        divCoupon.appendChild(spanFrontSide);
-    } else {
-
-    }
-
-    return divCoupon;
-
-
-    /*<div id="AntwortForm">
-     <div class="popupCloseButton" id="closeButton">X</div>
-     <p id="question"></p>
-     <input type="text" id="answer" name="fname"><br>
-     <button  id="checkButton"> Check ;)</button>
-     </div>*/
-
-
-};
-
 let onDoorKlicked = (event) => {
 
     //event.srcElement.classname += " open"
@@ -257,7 +196,7 @@ let onDoorKlicked = (event) => {
     let selectedObject = window.data[selectedId];
     let selectedDay;
     document.getElementById("checkButton").classList.remove("right");
-    if (selectedObject == null) {
+    if (selectedObject === null) {
 
         selectedDay = event.srcElement.parentElement.children[0].innerHTML;
     } else {
@@ -283,7 +222,6 @@ let onDoorKlicked = (event) => {
         alert("Leider musst du dich für dieses Rätsel noch gedulden!");
     }
 };
-
 let makePopover = (selectedObject) => {
     let popover = document.getElementById("popover");
     let popoverQuest = document.getElementById("AntwortForm");
@@ -292,7 +230,7 @@ let makePopover = (selectedObject) => {
     popover.style.display = "block";
     if (SelectedObject.beantwortet) {
         let image = document.getElementById("RespImage");
-        image.src = selectedObject.Response;
+        image.src = selectedObject.ResponsePic;
         popoverQuest.style.display = "none";
         popoverResp.style.display = "";
 
@@ -304,6 +242,7 @@ let makePopover = (selectedObject) => {
     }
 
 };
+
 
 let onInputKeyUp = (event) => {
     event.preventDefault();
@@ -354,14 +293,16 @@ let onCheckClicked = (event) => {
                 Day: day,
                 Frage: SelectedObject.Frage,
                 beantwortet: true,
-                Response: SelectedObject.Response
+                ResponsePic: SelectedObject.ResponsePic,
+                SolID: SelectedObject.SolID,
+                ResponseTxt:SelectedObject.ResponseTxt
             });
 
             setTimeout(function () {
                 let popoverQuest = document.getElementById("AntwortForm");
                 let popoverResp = document.getElementById("ResponseForm");
                 let image = document.getElementById("RespImage");
-                image.src = SelectedObject.Response;
+                image.src = SelectedObject.ResponsePic;
                 popoverQuest.style.display = "none";
                 popoverResp.style.display = "";
                 //clear input
@@ -380,6 +321,3 @@ let onCheckClicked = (event) => {
     }
 
 };
-let showSolution = () => {
-    let selectedObject = window.SelectedObject;
-}
