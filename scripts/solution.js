@@ -113,17 +113,18 @@ let makeSolutionVisible = () => {
                 let td = document.getElementById(snap.val()[key].SolID);
                 //td.classList.add("noBackground");
                 if (td !== undefined && td !== null) {
+                    setTimeout(function () {
+                        if (td.firstElementChild.classList.contains("flipped")) {
 
-                    td.firstElementChild.classList.toggle("flipped");
-
-
+                        } else {
+                            td.firstElementChild.classList.add("flipped");
+                        }
+                      
+                    }, 1000);
                 }
-
                 i++;
             }
-
         }
-
         //just for debug
         i = 24;
         if (i === 24) {
@@ -132,7 +133,9 @@ let makeSolutionVisible = () => {
                 if (allTd[j].firstElementChild.classList.contains("flipped")) {
 
                 } else {
+                     setTimeout(function () {
                     allTd[j].firstElementChild.classList.add("flipped");
+                },1000);
                 }
 
             }
@@ -208,7 +211,7 @@ let makeBgImage = () => {
     let ref = database.ref("/users/" + window.email);
     ref.on("value", function (snap) {
         let sUrl = snap.val().SolPic;
-        let sUrlForBg = "url(" + sUrl + ")"
+        let sUrlForBg = "url(" + sUrl + ")";
         oTable.style.backgroundImage = sUrlForBg;
 
         var img = new Image();
