@@ -16,3 +16,6 @@ main{
 .makeItWhite{
     background: white;
 }
+.makeVisible{
+    display: none !important;
+}

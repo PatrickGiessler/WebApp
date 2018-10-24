@@ -8,7 +8,7 @@
 //window.app = firebase.initializeApp(config);
 //window.database = firebase.database();
 
-window.addEventListener("load", () => {
+window.addEventListener("load", () => { 
     let bgCol = document.getElementById("bgCol");
     bgCol.addEventListener('change', onbgColChange);
     let cubeCol = document.getElementById("cubeCol");
@@ -16,8 +16,11 @@ window.addEventListener("load", () => {
     let cubeColSolv = document.getElementById("cubeColSolv");
     cubeColSolv.addEventListener('change', onCubeSolvColChange);
 
-    let cubeWrapper = document.getElementsByClassName()("cube-wrapper");
+    let cubeWrapper = document.getElementsByClassName("cube-wrapper");
     cubeWrapper[0].addEventListener("click", onWrapperClicked);
+    
+    let gotToDayBtn = document.getElementById("goToDay");
+    gotToDayBtn.addEventListener("click", onGoToDayClicked);
 
 });
 let onbgColChange = (event) => {
@@ -86,5 +89,13 @@ let setCol = (color) => {
     figurbottom[0].style.backgroundColor = cubColDarker;
 };
 onWrapperClicked = () => {
-    event.srcElement.classList.toggle("open");
+    let wrapper = document.getElementById("vorschau");
+    wrapper.classList.toggle("open");
 };
+onGoToDayClicked =()=>{
+  
+    let adminView = document.getElementById("adminview");
+    adminView.classList.toggle("makeVisible");
+     let dayView = document.getElementById("dayView");
+    dayView.classList.toggle("makeVisible");
+    };
