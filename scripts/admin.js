@@ -1,14 +1,14 @@
-//var firebase = require('firebase');
-//var config = {
-//    apiKey: "AIzaSyCof8vlK6qFoGmZOAZDX8MjIV-0_sHl73g",
-//    databaseURL: "https://projektfordh.firebaseio.com/",
-//    projectId: "projektfordh",
-//    storageBucket: "projektfordh.appspot.com"
-//};
-//window.app = firebase.initializeApp(config);
-//window.database = firebase.database();
+var firebase = require('firebase');
+var config = {
+    apiKey: "AIzaSyCof8vlK6qFoGmZOAZDX8MjIV-0_sHl73g",
+    databaseURL: "https://projektfordh.firebaseio.com/",
+    projectId: "projektfordh",
+    storageBucket: "projektfordh.appspot.com"
+};
+window.app = firebase.initializeApp(config);
+window.database = firebase.database();
 
-window.addEventListener("load", () => { 
+window.addEventListener("load", () => {
     let bgCol = document.getElementById("bgCol");
     bgCol.addEventListener('change', onbgColChange);
     let cubeCol = document.getElementById("cubeCol");
@@ -18,10 +18,17 @@ window.addEventListener("load", () => {
 
     let cubeWrapper = document.getElementsByClassName("cube-wrapper");
     cubeWrapper[0].addEventListener("click", onWrapperClicked);
-    
+
     let gotToDayBtn = document.getElementById("goToDay");
     gotToDayBtn.addEventListener("click", onGoToDayClicked);
 
+    let homeLink = document.getElementById("homeLink");
+    homeLink.addEventListener("click", onHomeClicked);
+     let quizLink = document.getElementById("quizLink");
+    quizLink.addEventListener("click", onQuizClicked);
+     let solLink = document.getElementById("solLink");
+    solLink.addEventListener("click", onHomeClicked);
+    
 });
 let onbgColChange = (event) => {
     //let rgb = event.sourceElement.innerHTML.rgb;
@@ -92,10 +99,94 @@ onWrapperClicked = () => {
     let wrapper = document.getElementById("vorschau");
     wrapper.classList.toggle("open");
 };
-onGoToDayClicked =()=>{
-  
-    let adminView = document.getElementById("adminview");
-    adminView.classList.toggle("makeVisible");
-     let dayView = document.getElementById("dayView");
-    dayView.classList.toggle("makeVisible");
-    };
+onGoToDayClicked = () => {
+    let toValidateNodeList = document.getElementById("adminview").querySelectorAll("input");
+    let isValid = validateInputs(toValidateNodeList);
+
+    if (isValid) {
+        saveToFireBase(toValidateNodeList);
+        let adminView = document.getElementById("adminview");
+        adminView.classList.toggle("makeVisible");
+
+        let dayView = document.getElementById("dayView");
+        dayView.classList.toggle("makeVisible");
+
+        let homeLink = document.getElementById("homeLink");
+        homeLink.classList.toggle("active");
+    }
+};
+
+let validateInputs = (nodeList) => {
+    let faults = 0;
+    for (let i = 0; i < nodeList.length; i++) {
+        if (nodeList[i].value === "") {
+
+            nodeList[i].classList.add("makeRedBorder");
+            faults++;
+        }
+    }
+    if (faults === 0) {
+        return true;
+    } else {
+        alert("Alle Felder Auswüllen");
+        return false;
+    }
+
+};
+
+
+
+
+let saveToFireBase = (nodeList) => {
+    let benutzerName = nodeList[0].value;
+    let Pw = nodeList[1].value;
+    let bgCol = "rgb(" + Math.round(nodeList[2].jscolor.rgb[0]) + "," + Math.round(nodeList[2].jscolor.rgb[1]) + "," + Math.round(nodeList[2].jscolor.rgb[2]) + ")";
+    let cubeCol = "rgb(" + Math.round(nodeList[3].jscolor.rgb[0]) + "," + Math.round(nodeList[3].jscolor.rgb[1]) + "," + Math.round(nodeList[3].jscolor.rgb[2]) + ")";
+    let CubeColSol = "rgb(" + Math.round(nodeList[4].jscolor.rgb[0]) + "," + Math.round(nodeList[4].jscolor.rgb[1]) + "," + Math.round(nodeList[4].jscolor.rgb[2]) + ")";
+    let Days = {};
+
+    let path = "/users/" + benutzerName;
+    database.ref(path).set({
+        SolPic: "",
+        Days: Days,
+        backgroundCol: bgCol,
+        cubCol: cubeCol,
+        cubColSolved: CubeColSol,
+        pw: Pw
+    });
+
+};
+let onHomeClicked = (event) => {
+    if (event.srcElement.classList.contains("active")) {
+
+    } else {
+        allLinks = event.srcElement.parentElement.querySelectorAll("a");
+        for (let i = 0; i < allLinks; i++) {
+            allLinks[i].classList.remove("active");
+        }
+        event.srcElement.classList.add("active");
+    }
+};
+let onQuizClicked = (event) => {
+    if (event.srcElement.classList.contains("active")) {
+
+    } else {
+        allLinks = event.srcElement.parentElement.querySelectorAll("a");
+        for (let i = 0; i < allLinks; i++) {
+            allLinks[i].classList.remove("active");
+        }
+        event.srcElement.classList.add("active");
+        onGoToDayClicked();
+    }
+};
+let onSolClicked = (event) => {
+    if (event.srcElement.classList.contains("active")) {
+
+    } else {
+        allLinks = event.srcElement.parentElement.querySelectorAll("a");
+        for (let i = 0; i < allLinks; i++) {
+            allLinks[i].classList.remove("active");
+        }
+        event.srcElement.classList.add("active");
+    }
+};
