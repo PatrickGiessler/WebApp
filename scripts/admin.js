@@ -22,13 +22,21 @@ window.addEventListener("load", () => {
     let gotToDayBtn = document.getElementById("goToDay");
     gotToDayBtn.addEventListener("click", onGoToDayClicked);
 
+    let carouselPrev = document.getElementById("carouselPrev");
+    carouselPrev.addEventListener("click", onCarouselNavClicked);
+    
+    let carouselNext = document.getElementById("carouselNext");
+    carouselNext.addEventListener("click", onCarouselNavClicked);
+
+
+
     let homeLink = document.getElementById("homeLink");
     homeLink.addEventListener("click", onHomeClicked);
-     let quizLink = document.getElementById("quizLink");
+    let quizLink = document.getElementById("quizLink");
     quizLink.addEventListener("click", onQuizClicked);
-     let solLink = document.getElementById("solLink");
+    let solLink = document.getElementById("solLink");
     solLink.addEventListener("click", onHomeClicked);
-    
+
 });
 let onbgColChange = (event) => {
     //let rgb = event.sourceElement.innerHTML.rgb;
@@ -135,17 +143,56 @@ let validateInputs = (nodeList) => {
 };
 
 
+let onCarouselNavClicked = (event) => {
+    let test = event.srcElement;
+    let nodeList = document.getElementsByClassName("active").item(1).querySelectorAll("input");
+    let isValid = validateInputs(nodeList);
+    let user = window.benutzerName;
+    if (isValid) {
+        let day = document.getElementsByClassName("active").item(1).querySelectorAll("h1")[0].innerHTML;
+        day = day.slice(5, day.length - 1);
+        let solUrl = nodeList[2].value;
+        let question = nodeList[0].value;
+        let solution = nodeList[1].value;
+        //database
+        let path = "/users/" + user + "/Days/Day" + day;
+        database.ref(path).set({
+            Antwort: solution,
+            Day: day,
+            Frage: question,
+            beantwortet: false,
+            ResponsePic: solUrl,
+            SolID: "",
+            ResponseTxt: ""
+        });
+        
+        if(event.srcElement.parentElement.classList.contains("carousel-control-prev")){
+              $('#carouselExampleIndicators').carousel('prev');
+        }
+        else if (event.srcElement.parentElement.classList.contains("carousel-control-next")){
+             $('#carouselExampleIndicators').carousel('next');
+        }
+        
 
+    }
+
+
+
+
+
+
+
+};
 
 let saveToFireBase = (nodeList) => {
-    let benutzerName = nodeList[0].value;
+    window.benutzerName = nodeList[0].value;
     let Pw = nodeList[1].value;
     let bgCol = "rgb(" + Math.round(nodeList[2].jscolor.rgb[0]) + "," + Math.round(nodeList[2].jscolor.rgb[1]) + "," + Math.round(nodeList[2].jscolor.rgb[2]) + ")";
     let cubeCol = "rgb(" + Math.round(nodeList[3].jscolor.rgb[0]) + "," + Math.round(nodeList[3].jscolor.rgb[1]) + "," + Math.round(nodeList[3].jscolor.rgb[2]) + ")";
     let CubeColSol = "rgb(" + Math.round(nodeList[4].jscolor.rgb[0]) + "," + Math.round(nodeList[4].jscolor.rgb[1]) + "," + Math.round(nodeList[4].jscolor.rgb[2]) + ")";
     let Days = {};
 
-    let path = "/users/" + benutzerName;
+    let path = "/users/" + window.benutzerName;
     database.ref(path).set({
         SolPic: "",
         Days: Days,
