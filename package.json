@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/PatrickGiessler/WebApp#readme",
   "dependencies": {
+    "bootstrap-colorpicker": "^3.0.3",
     "firebase": "^5.5.4",
     "npm": "^6.4.1"
   }

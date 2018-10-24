@@ -9,3 +9,4 @@ nbproject/project.properties
 scripts/login_bundle.js
 scripts/solution_bundle.js
 scripts/login_bundle.js
+scripts/admin_bundle.js
