@@ -36,6 +36,9 @@ window.addEventListener("load", () => {
     quizLink.addEventListener("click", onQuizClicked);
     let solLink = document.getElementById("solLink");
     solLink.addEventListener("click", onHomeClicked);
+    
+    
+    window.SolArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 
 });
 let onbgColChange = (event) => {
@@ -121,6 +124,9 @@ onGoToDayClicked = () => {
 
         let homeLink = document.getElementById("homeLink");
         homeLink.classList.toggle("active");
+        
+         let navText = document.getElementById("countText");
+        navText.classList.toggle("makeVisible");
     }
 };
 
@@ -165,6 +171,14 @@ let onCarouselNavClicked = (event) => {
             SolID: "",
             ResponseTxt: ""
         });
+        
+        let array = window.SolArray;
+        let index = array.indexOf(parseInt(day));
+        if(index !== -1){
+            array.splice(index,1);
+            document.getElementById("count").innerHTML =array.length;
+        }
+        
         
         if(event.srcElement.parentElement.classList.contains("carousel-control-prev")){
               $('#carouselExampleIndicators').carousel('prev');

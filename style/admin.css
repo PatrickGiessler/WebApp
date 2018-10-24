@@ -77,3 +77,8 @@ main{
     margin:0em;
     background-color: #ffff99;
 }
+.brighterCount{
+    font-size: 2em;
+    font-weight: bold;
+    color: white;
+}
