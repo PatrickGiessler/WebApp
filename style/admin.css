@@ -3,7 +3,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
-/* 
+/*
     Created on : 23.10.2018, 17:17:48
     Author     : PatrickGießler
 */
@@ -11,11 +11,67 @@ main{
     padding-left: 2em;
 }
 .row{
-   
+
 }
 .makeItWhite{
     background: white;
 }
 .makeVisible{
     display: none !important;
+}
+
+.carousel{
+  width: 100%
+}
+
+.dayCol{
+  padding-left: 25% !important;
+  padding-right: 25% !important;
+}
+
+#dayHeader{
+  padding-top: 2em;
+}
+
+.dayInput{
+  width: 50%;
+}
+
+#partSolution{
+  margin-bottom: 6em;
+}
+
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 6em;
+  color: black;
+}
+
+.carousel-control-prev-icon:after
+{
+  content: '<';
+  font-size: 6em;
+  color: black;
+}
+
+
+.carousel-indicators li {
+    display: inline-block;
+    width: 1.5em !important;
+    height: 48px;
+    margin: 10px;
+    text-indent: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    background-color: #0000ff;
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);
+}
+.carousel-indicators .active {
+    width: 1.5em;
+    height: 1.5em;
+    margin:0em;
+    background-color: #ffff99;
 }
