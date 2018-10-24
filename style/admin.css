@@ -19,3 +19,6 @@ main{
 .makeVisible{
     display: none !important;
 }
+.makeRedBorder {
+    border: red 1px solid !important;
+}
