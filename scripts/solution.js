@@ -126,7 +126,7 @@ let makeSolutionVisible = () => {
             }
         }
         //just for debug
-        i = 24;
+        //i = 24;
         if (i === 24) {
             let allTd = document.getElementsByTagName("td");
             for (let j = 0; j < allTd.length; j++) {
