@@ -116,7 +116,7 @@ onGoToDayClicked = () => {
 
     if (isValid) {
         saveToFireBase(toValidateNodeList);
-        showQuiz();       
+        showQuiz();
     }
 };
 
@@ -124,9 +124,9 @@ let showQuiz = () => {
     let adminView = document.getElementById("adminview");
     adminView.classList.remove("makeVisible");
     adminView.classList.add("makeInVisible");
-    
-      document.getElementById("textForCoutn").classList.remove("makeInVisible");
-      document.getElementById("textForCoutn").classList.add("makeVisible");
+
+    document.getElementById("textForCoutn").classList.remove("makeInVisible");
+    document.getElementById("textForCoutn").classList.add("makeVisible");
 
     let dayView = document.getElementById("dayView");
     dayView.classList.add("makeVisible");
@@ -159,11 +159,11 @@ let validateInputs = (nodeList) => {
 
 
 let onCarouselNavClicked = (event) => {
-    let nodeList = document.getElementsByClassName("active").item(1).querySelectorAll("input");
+    let nodeList = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("input");
     let isValid = validateInputs(nodeList);
     let user = window.benutzerName;
     if (isValid) {
-        let day = document.getElementsByClassName("active").item(1).querySelectorAll("h1")[0].innerHTML;
+        let day = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("h1")[0].innerHTML;
         day = day.slice(5, day.length - 1);
         let solUrl = nodeList[2].value;
         let question = nodeList[0].value;
@@ -184,15 +184,14 @@ let onCarouselNavClicked = (event) => {
         let index = array.indexOf(parseInt(day));
         if (index !== -1) {
             array.splice(index, 1);
-            if (array.length ===0) {
-                 document.getElementById("buttonForNext").classList.toggle("makeInVisible");
-                 document.getElementById("textForCoutn").classList.remove("makeVisible");
-                 document.getElementById("textForCoutn").classList.add("makeInVisible");
+            if (array.length === 0) {
+                document.getElementById("buttonForNext").classList.toggle("makeInVisible");
+                document.getElementById("textForCoutn").classList.remove("makeVisible");
+                document.getElementById("textForCoutn").classList.add("makeInVisible");
+            } else {
+                document.getElementById("count").innerHTML = array.length;
             }
-            else{
-                 document.getElementById("count").innerHTML = array.length;
-            }
-           
+
         }
 
 
@@ -201,15 +200,7 @@ let onCarouselNavClicked = (event) => {
         } else if (event.srcElement.parentElement.classList.contains("carousel-control-next")) {
             $('#carouselExampleIndicators').carousel('next');
         }
-
-
     }
-
-
-
-
-
-
 
 };
 
@@ -233,21 +224,27 @@ let saveToFireBase = (nodeList) => {
 
 };
 let onNavbarClicked = (event) => {
-    let id = event.srcElement.id;
-    
-    if (isValidFormat)
-        changeView(id);
+    let target = event.srcElement.id;
+    let sourceContainer = document.getElementsByClassName("navbar-nav");
+    let source = sourceContainer[0].getElementsByClassName("active")[0].id;
+    if (target !== source) {
+
+        changeView(target, source);
+    }
 };
-let changeView = (idToShow) => {
+
+let changeView = (idToShow, soruce) => {
     let isValid = false;
 
-    switch (idToShow) {
+    document.getElementsByClassName("active").item(1).querySelectorAll("input");
+    switch (soruce) {
         case "homeLink":
-
+            let toValidateNodeList = document.getElementById("adminview").querySelectorAll("input");
+            isValid = validateInputs(toValidateNodeList);
             break;
         case "quizLink":
-            //homeView 
-            //
+            let nodeList = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("input");
+            isValid = validateInputs(nodeList);
             break;
         case "solLink":
 
@@ -257,6 +254,38 @@ let changeView = (idToShow) => {
 
             break;
     }
+    if (isValid) {
+                document.getElementById(soruce).classList.toggle("active");
+        document.getElementById(idToShow).classList.toggle("active");
+        let allViews = document.getElementsByClassName("forSel");
+
+        for (let i = 0; i < allViews.length; i++) {
+            if (allViews[i].classList.contains("makeVisible")) {
+                allViews[i].classList.remove("makeVisible");
+                allViews[i].classList.add("makeInVisible");
+            }
+        }
+
+        switch (idToShow) {
+            case "homeLink":
+                allViews[0].classList.remove("makeInVisible");
+                allViews[0].classList.add("makeVisible");
+                break;
+            case "quizLink":
+                allViews[1].classList.remove("makeInVisible");
+                allViews[1].classList.add("makeVisible");
+                break;
+            case "solLink":
+                allViews[2].classList.remove("makeInVisible");
+                allViews[2].classList.add("makeVisible");
+                break;
+
+            default:
+
+                break;
+        }
+    }
+
     if (isValid) {
         let navbar = document.getElementsByClassName("navbar-nav");
         let allLinks = navbar[0].querySelectorAll("a");
