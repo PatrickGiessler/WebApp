@@ -16,8 +16,11 @@ main{
 .makeItWhite{
     background: white;
 }
-.makeVisible{
+.makeInVisible{
     display: none !important;
+}
+.makeVisible{
+    display: block !important;
 }
 .makeRedBorder {
     border: red 1px solid !important;

@@ -36,16 +36,19 @@ and open the template in the editor.
                         <a class="nav-item nav-link" id="solLink">Lösung</a>
                     </div>
                 </div>
-                <div class="navbar-text makeVisible" id="countText">
-                    <span>
-                        Du müsst noch  
+                <div class="navbar-text" id="countText">
+                    <span id="textForCoutn" class="makeInVisible">
+                        <span >
+                            Du müsst noch  
+                        </span>
+                        <span class="brighterCount" id ="count">
+                            24
+                        </span>
+                        <span id ="count">
+                            Rätsel lösen um fortfahren zu können.
+                        </span>
                     </span>
-                    <span class="brighterCount" id ="count">
-                    24
-                    </span>
-                    <span id ="count">
-                        Rätsel lösen um fortfahren zu können.
-                    </span>
+                    <button id="buttonForNext" type="button" class="btn btn-success makeInVisible">Success</button>
                 </div>
 
             </nav>
@@ -53,8 +56,8 @@ and open the template in the editor.
         </header>
         <main>
             <div class="container-fluid">
-                <div class="row" id="adminview">
-                    <div class="col-6">
+                <div class="row makeVisible" id="adminview">
+                    <div class="col-6">makeVisible
 
 
                         <div class="row">
@@ -144,7 +147,7 @@ and open the template in the editor.
 
                     </div>
                 </div>
-                <div class="row makeVisible" id="dayView">
+                <div class="row makeInVisible" id="dayView">
                     <div id="carouselExampleIndicators" class="carousel slide" data-interval="false" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>

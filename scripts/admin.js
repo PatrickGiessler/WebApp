@@ -24,21 +24,21 @@ window.addEventListener("load", () => {
 
     let carouselPrev = document.getElementById("carouselPrev");
     carouselPrev.addEventListener("click", onCarouselNavClicked);
-    
+
     let carouselNext = document.getElementById("carouselNext");
     carouselNext.addEventListener("click", onCarouselNavClicked);
 
 
 
     let homeLink = document.getElementById("homeLink");
-    homeLink.addEventListener("click", onHomeClicked);
+    homeLink.addEventListener("click", onNavbarClicked);
     let quizLink = document.getElementById("quizLink");
-    quizLink.addEventListener("click", onQuizClicked);
+    quizLink.addEventListener("click", onNavbarClicked);
     let solLink = document.getElementById("solLink");
-    solLink.addEventListener("click", onHomeClicked);
-    
-    
-    window.SolArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+    solLink.addEventListener("click", onNavbarClicked);
+
+
+    window.SolArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
 });
 let onbgColChange = (event) => {
@@ -116,18 +116,27 @@ onGoToDayClicked = () => {
 
     if (isValid) {
         saveToFireBase(toValidateNodeList);
-        let adminView = document.getElementById("adminview");
-        adminView.classList.toggle("makeVisible");
-
-        let dayView = document.getElementById("dayView");
-        dayView.classList.toggle("makeVisible");
-
-        let homeLink = document.getElementById("homeLink");
-        homeLink.classList.toggle("active");
-        
-         let navText = document.getElementById("countText");
-        navText.classList.toggle("makeVisible");
+        showQuiz();       
     }
+};
+
+let showQuiz = () => {
+    let adminView = document.getElementById("adminview");
+    adminView.classList.remove("makeVisible");
+    adminView.classList.add("makeInVisible");
+    
+      document.getElementById("textForCoutn").classList.remove("makeInVisible");
+      document.getElementById("textForCoutn").classList.add("makeVisible");
+
+    let dayView = document.getElementById("dayView");
+    dayView.classList.add("makeVisible");
+    dayView.classList.remove("makeInVisible");
+
+    let homeLink = document.getElementById("homeLink");
+    homeLink.classList.toggle("active");
+
+    let navText = document.getElementById("countText");
+    navText.classList.toggle("makeVisible");
 };
 
 let validateInputs = (nodeList) => {
@@ -150,7 +159,6 @@ let validateInputs = (nodeList) => {
 
 
 let onCarouselNavClicked = (event) => {
-    let test = event.srcElement;
     let nodeList = document.getElementsByClassName("active").item(1).querySelectorAll("input");
     let isValid = validateInputs(nodeList);
     let user = window.benutzerName;
@@ -171,22 +179,29 @@ let onCarouselNavClicked = (event) => {
             SolID: "",
             ResponseTxt: ""
         });
-        
+
         let array = window.SolArray;
         let index = array.indexOf(parseInt(day));
-        if(index !== -1){
-            array.splice(index,1);
-            document.getElementById("count").innerHTML =array.length;
+        if (index !== -1) {
+            array.splice(index, 1);
+            if (array.length ===0) {
+                 document.getElementById("buttonForNext").classList.toggle("makeInVisible");
+                 document.getElementById("textForCoutn").classList.remove("makeVisible");
+                 document.getElementById("textForCoutn").classList.add("makeInVisible");
+            }
+            else{
+                 document.getElementById("count").innerHTML = array.length;
+            }
+           
         }
-        
-        
-        if(event.srcElement.parentElement.classList.contains("carousel-control-prev")){
-              $('#carouselExampleIndicators').carousel('prev');
+
+
+        if (event.srcElement.parentElement.classList.contains("carousel-control-prev")) {
+            $('#carouselExampleIndicators').carousel('prev');
+        } else if (event.srcElement.parentElement.classList.contains("carousel-control-next")) {
+            $('#carouselExampleIndicators').carousel('next');
         }
-        else if (event.srcElement.parentElement.classList.contains("carousel-control-next")){
-             $('#carouselExampleIndicators').carousel('next');
-        }
-        
+
 
     }
 
@@ -217,37 +232,40 @@ let saveToFireBase = (nodeList) => {
     });
 
 };
-let onHomeClicked = (event) => {
-    if (event.srcElement.classList.contains("active")) {
-
-    } else {
-        allLinks = event.srcElement.parentElement.querySelectorAll("a");
-        for (let i = 0; i < allLinks; i++) {
-            allLinks[i].classList.remove("active");
-        }
-        event.srcElement.classList.add("active");
-    }
+let onNavbarClicked = (event) => {
+    let id = event.srcElement.id;
+    
+    if (isValidFormat)
+        changeView(id);
 };
-let onQuizClicked = (event) => {
-    if (event.srcElement.classList.contains("active")) {
+let changeView = (idToShow) => {
+    let isValid = false;
 
-    } else {
-        allLinks = event.srcElement.parentElement.querySelectorAll("a");
+    switch (idToShow) {
+        case "homeLink":
+
+            break;
+        case "quizLink":
+            //homeView 
+            //
+            break;
+        case "solLink":
+
+            break;
+
+        default:
+
+            break;
+    }
+    if (isValid) {
+        let navbar = document.getElementsByClassName("navbar-nav");
+        let allLinks = navbar[0].querySelectorAll("a");
+        let highLightLink = document.getElementById(idToShow);
         for (let i = 0; i < allLinks; i++) {
             allLinks[i].classList.remove("active");
         }
-        event.srcElement.classList.add("active");
-        onGoToDayClicked();
+        highLightLink.classList.add("active");
     }
-};
-let onSolClicked = (event) => {
-    if (event.srcElement.classList.contains("active")) {
 
-    } else {
-        allLinks = event.srcElement.parentElement.querySelectorAll("a");
-        for (let i = 0; i < allLinks; i++) {
-            allLinks[i].classList.remove("active");
-        }
-        event.srcElement.classList.add("active");
-    }
+
 };
