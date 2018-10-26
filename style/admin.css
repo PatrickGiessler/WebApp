@@ -22,6 +22,48 @@ main{
 .makeRedBorder {
     border: red 1px solid !important;
 }
+
+#goToDay{
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+#mobile-line{
+    display: none;
+}
+
+@media (max-width:768px){
+  button{
+    width: 100%;
+  }
+
+  h1{
+    text-align: center !important;
+    margin-left: 0em !important;
+  }
+  .row{
+    margin-left: -1.5em !important;
+    margin-right: 0em !important;
+  }
+
+  .cuberow{
+    width: 100% !important;
+  }
+
+  #mobile-line{
+    display:flex;
+  }
+}
+
+.cuberow{
+  height: 20em;
+  width: 25em;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border: black;
+  border-style: solid;
+}
+
 .carousel{
   width: 100%
 }
@@ -29,6 +71,11 @@ main{
 .dayCol{
   padding-left: 25% !important;
   padding-right: 25% !important;
+}
+
+.cube-wrapper{
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 #dayHeader{

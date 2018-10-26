@@ -38,13 +38,13 @@ and open the template in the editor.
                 </div>
                 <div class="navbar-text makeVisible" id="countText">
                     <span>
-                        Du müsst noch  
+                        Du müsst noch
                     </span>
                     <span class="brighterCount" id ="count">
                     24
                     </span>
                     <span id ="count">
-                        Rätsel lösen um fortfahren zu können.
+                        Rätsel bearbeiten, um fortfahren zu können.
                     </span>
                 </div>
 
@@ -54,7 +54,7 @@ and open the template in the editor.
         <main>
             <div class="container-fluid">
                 <div class="row" id="adminview">
-                    <div class="col-6">
+                    <div class="col-sm-12 col-md-6">
 
 
                         <div class="row">
@@ -87,12 +87,10 @@ and open the template in the editor.
                                     <input  class="jscolor form-control" id="bgCol" aria-describedby="basic-addon3">
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="row">
                             <div class="col-12" >
-                                <label for="cubeCol">Geschenkfarbe Standart</label>
+                                <label for="cubeCol">Geschenkfarbe Standard</label>
                                 <div class="input-group mb-3">
 
                                     <input class="jscolor form-control" id="cubeCol" >
@@ -111,17 +109,18 @@ and open the template in the editor.
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <button type="button" class="btn btn-dark align-bottom" id="goToDay">Dark</button>
+                                <button type="button" class="btn btn-dark align-bottom" id="goToDay">Zu den Rätseln</button>
                             </div>
-
                         </div>
                     </div>
-                    <div class="col-6" id="vorschau">
+                    <div class="col-sm-12 col-md-6" id="vorschau">
                         <div class="row">
                             <div class="col-12 makeItWhite">
+                                <hr id="mobile-line">
                                 <h1>VORSCHAU</h1>
                             </div>
-
+                          </div>
+                          <div class="row cuberow">
                             <div class="col-12">
                                 <section class="cube-wrapper">
                                     <div class="cube">
@@ -140,6 +139,7 @@ and open the template in the editor.
                                     </div>
                                 </section>
                             </div>
+                          </div>
                         </div>
 
                     </div>
