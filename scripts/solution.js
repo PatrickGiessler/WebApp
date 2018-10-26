@@ -31,9 +31,7 @@ window.addEventListener("load", () => {
     }
     let switchcalendarButton = document.getElementById("switchcalendarButton");
     switchcalendarButton.addEventListener("click", onSwitchCalendarClicked);
-    document.addEventListener("DOMContentLoaded", function () {
-        alert("reday");
-    });
+
 
 });
 let createView = (countCol, countRow) => {
@@ -69,7 +67,7 @@ let createView = (countCol, countRow) => {
             td.bgColor = window.color;
             td.id = tdID;
             if (i === countCol - 1) {
-                td.style.width = (widthPerColRound + rowDif) + "px";
+                td.style.width = (widthPerColRound + colDif) + "px";
                 td.style.height = height;
             } else {
                 td.style.width = widthPerColRound + "px";
@@ -119,7 +117,7 @@ let makeSolutionVisible = () => {
                         } else {
                             td.firstElementChild.classList.add("flipped");
                         }
-                      
+
                     }, 1000);
                 }
                 i++;
@@ -133,9 +131,9 @@ let makeSolutionVisible = () => {
                 if (allTd[j].firstElementChild.classList.contains("flipped")) {
 
                 } else {
-                     setTimeout(function () {
-                    allTd[j].firstElementChild.classList.add("flipped");
-                },1000);
+                    setTimeout(function () {
+                        allTd[j].firstElementChild.classList.add("flipped");
+                    }, 1000);
                 }
 
             }
@@ -166,38 +164,38 @@ let onImgResize = (event) => {
     let widthPerCol = width / window.colCount;
     let widthPerColRound = Math.round(widthPerCol);
     let colDif = width - (widthPerColRound * window.colCount);
+    let lastColWidth = (widthPerColRound + colDif) + "px";
+    let widthToUse = "";
+
 
     let height = Math.round(width / window.ratio);
-    let calcHeight = height;
     let heightPerCol = height / window.rowCount;
     let heightPerColRound = Math.round(heightPerCol);
     let rowDif = height - (heightPerColRound * window.rowCount);
+    let calcHeightLast = (heightPerColRound + rowDif) + "px";
+    let heightToUse = "";
+
 
     let allTr = document.getElementsByTagName("tr");
+
     for (let i = 0; i < allTr.length; i++) {
-        if (i === allTr.length - 1) {
-            calcHeight = (heightPerColRound + rowDif) + "px";
-            allTr[i].style.height = calcHeight;
+        let allTd = allTr[i].querySelectorAll("td");
+        for (let j = 0; j < allTd.length; j++) {
+            if (i === allTr.length - 1) {
+                heightToUse = calcHeightLast;
+            } else {
+                heightToUse = heightPerColRound + "px";
+            }
 
-        } else {
-            calcHeight = heightPerColRound + "px";
-            allTr[i].style.height = calcHeight;
+            if (j === allTd.length - 1) {
+                widthToUse = lastColWidth;
+            } else {
+                widthToUse = widthPerColRound + "px";
+            }
+            allTd[j].style.height = heightToUse;
+            allTd[j].style.width = widthToUse;
         }
-
-
-    }
-
-    let allTd = document.getElementsByTagName("td");
-    for (let i = 0; i < allTd.length; i++) {
-        if (i === allTd.length - 1) {
-            allTd[i].style.width = (widthPerColRound + colDif) + "px";
-            allTd[i].style.height = calcHeight;
-        } else {
-            allTd[i].style.width = widthPerColRound + "px";
-            allTd[i].style.height = calcHeight;
-        }
-
-
+        allTr[i].style.height = heightToUse;
     }
 
 

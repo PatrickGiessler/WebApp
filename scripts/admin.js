@@ -37,6 +37,13 @@ window.addEventListener("load", () => {
     let solLink = document.getElementById("solLink");
     solLink.addEventListener("click", onNavbarClicked);
 
+    let solURL = document.getElementById("picURl");
+    solURL.addEventListener("input", onInputChange);
+    let colCount = document.getElementById("colCount");
+    colCount.addEventListener("input", onInputChange);
+    let rowCount = document.getElementById("rowCount");
+    rowCount.addEventListener("input", onInputChange);
+
 
     window.SolArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
@@ -247,7 +254,8 @@ let changeView = (idToShow, soruce) => {
             isValid = validateInputs(nodeList);
             break;
         case "solLink":
-
+            let toValidNodeList = document.getElementById("solutionView").querySelectorAll("input");
+            isValid = validateInputs(toValidNodeList);
             break;
 
         default:
@@ -255,7 +263,7 @@ let changeView = (idToShow, soruce) => {
             break;
     }
     if (isValid) {
-                document.getElementById(soruce).classList.toggle("active");
+        document.getElementById(soruce).classList.toggle("active");
         document.getElementById(idToShow).classList.toggle("active");
         let allViews = document.getElementsByClassName("forSel");
 
@@ -295,6 +303,140 @@ let changeView = (idToShow, soruce) => {
         }
         highLightLink.classList.add("active");
     }
+
+
+};
+
+
+
+let onInputChange = (event) => {
+    let allInputs = document.getElementById("solutionView").querySelectorAll("input");
+    let sURL = allInputs[0].value;
+    window.colCount = parseInt(allInputs[1].value);
+    window.rowCount = parseInt(allInputs[2].value);
+    if (window.colCount > 0 && window.rowCount > 0 && sURL !== "") {
+        makeBgImage(sURL);
+    }
+};
+
+
+
+
+let createView = (countCol, countRow, fakeelement) => {
+    let table = document.getElementById("table");
+    while (table.firstChild) {
+        table.removeChild(table.firstChild);
+    }
+    let width = window.innerWidth;
+    let widthPerCol = width / window.colCount;
+    let widthPerColRound = Math.round(widthPerCol);
+    let colDif = width - (widthPerColRound * window.colCount);
+
+    let height = Math.round(width / window.ratio);
+    let heightPerCol = height / window.rowCount;
+    let heightPerColRound = Math.round(heightPerCol);
+    let rowDif = height - (heightPerColRound * window.rowCount);
+
+    for (let i = 0; i < countRow; i++) {
+
+        let tr = document.createElement("tr");
+        tr.id = "" + (i + 1);
+        let height = 0;
+
+        if (i === countRow - 1) {
+            height = (heightPerColRound + rowDif) + "px";
+
+        } else {
+            height = heightPerColRound + "px";
+        }
+        tr.style.height = height;
+        for (let j = 0; j < countCol; j++) {
+            let td = document.createElement("td");
+            let tdID = (i + 1) + "_" + (j + 1);
+            td.id = tdID;
+            if (i === countCol - 1) {
+                td.style.width = (widthPerColRound + colDif) + "px";
+                td.style.height = height;
+            } else {
+                td.style.width = widthPerColRound + "px";
+                td.style.height = height;
+            }
+
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+
+    }
+
+    onImgResize(fakeelement);
+    window.addEventListener('resize', onImgResize);
+
+
+};
+
+
+let callBackOnload = (event) => {
+    //alert("test");
+    window.ratio = event.srcElement.naturalWidth / event.srcElement.naturalHeight;
+    var table = document.getElementById("table");
+    let fakeelement = {
+        srcElement: window
+    };
+    createView(window.colCount, window.rowCount, fakeelement);
+
+    //new ResizeObserver(onImgResize).observe(table);
+};
+let onImgResize = (event) => {
+
+    let width = window.getComputedStyle(document.getElementById("table")).width;
+    width = width.slice(0, width.length - 2);
+    let widthPerCol = width / window.colCount;
+    let widthPerColRound = Math.round(widthPerCol) ;
+    let colDif = width - (widthPerColRound * window.colCount);
+    let lastColWidth = (widthPerColRound + colDif) + "px";
+    let widthToUse = "";
+
+
+    let height = Math.round(width / window.ratio);
+    let heightPerCol = height / window.rowCount;
+    let heightPerColRound = Math.round(heightPerCol) ;
+    let rowDif = height - (heightPerColRound * window.rowCount);
+    let calcHeightLast = (heightPerColRound + rowDif) + "px";
+    let heightToUse = "";
+
+
+    let allTr = document.getElementsByTagName("tr");
+
+    for (let i = 0; i<allTr.length; i++) {
+        let allTd = allTr[i].querySelectorAll("td");
+        for (let j = 0; j< allTd.length; j++) {
+            if (i === allTr.length - 1) {
+                heightToUse = calcHeightLast;
+            } else {
+                heightToUse = heightPerColRound + "px";
+            }
+          
+            if (j === allTd.length - 1) {
+                widthToUse = lastColWidth;
+            }
+            else {
+                widthToUse =widthPerColRound + "px" ;
+            }
+              allTd[j].style.height = heightToUse;
+              allTd[j].style.width = widthToUse;
+        }
+      allTr[i].style.height = heightToUse;
+    }
+};
+
+let makeBgImage = (sURL) => {
+    let oTable = document.getElementById("table");
+    bgsURL = "url('" + sURL + "')";
+    oTable.style.backgroundImage = bgsURL;
+    var img = new Image();
+    img.onload = callBackOnload;
+    img.src = sURL;
+
 
 
 };

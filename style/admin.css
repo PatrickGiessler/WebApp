@@ -88,3 +88,16 @@ main{
 .forSel{
     
 }
+
+table{
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+td{
+    border: 1px red solid;
+}
