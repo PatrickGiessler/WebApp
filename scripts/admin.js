@@ -24,21 +24,28 @@ window.addEventListener("load", () => {
 
     let carouselPrev = document.getElementById("carouselPrev");
     carouselPrev.addEventListener("click", onCarouselNavClicked);
-    
+
     let carouselNext = document.getElementById("carouselNext");
     carouselNext.addEventListener("click", onCarouselNavClicked);
 
 
 
     let homeLink = document.getElementById("homeLink");
-    homeLink.addEventListener("click", onHomeClicked);
+    homeLink.addEventListener("click", onNavbarClicked);
     let quizLink = document.getElementById("quizLink");
-    quizLink.addEventListener("click", onQuizClicked);
+    quizLink.addEventListener("click", onNavbarClicked);
     let solLink = document.getElementById("solLink");
-    solLink.addEventListener("click", onHomeClicked);
-    
-    
-    window.SolArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+    solLink.addEventListener("click", onNavbarClicked);
+
+    let solURL = document.getElementById("picURl");
+    solURL.addEventListener("input", onInputChange);
+    let colCount = document.getElementById("colCount");
+    colCount.addEventListener("input", onInputChange);
+    let rowCount = document.getElementById("rowCount");
+    rowCount.addEventListener("input", onInputChange);
+
+
+    window.SolArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
 });
 let onbgColChange = (event) => {
@@ -116,18 +123,27 @@ onGoToDayClicked = () => {
 
     if (isValid) {
         saveToFireBase(toValidateNodeList);
-        let adminView = document.getElementById("adminview");
-        adminView.classList.toggle("makeVisible");
-
-        let dayView = document.getElementById("dayView");
-        dayView.classList.toggle("makeVisible");
-
-        let homeLink = document.getElementById("homeLink");
-        homeLink.classList.toggle("active");
-        
-         let navText = document.getElementById("countText");
-        navText.classList.toggle("makeVisible");
+        showQuiz();
     }
+};
+
+let showQuiz = () => {
+    let adminView = document.getElementById("adminview");
+    adminView.classList.remove("makeVisible");
+    adminView.classList.add("makeInVisible");
+
+    document.getElementById("textForCoutn").classList.remove("makeInVisible");
+    document.getElementById("textForCoutn").classList.add("makeVisible");
+
+    let dayView = document.getElementById("dayView");
+    dayView.classList.add("makeVisible");
+    dayView.classList.remove("makeInVisible");
+
+    let homeLink = document.getElementById("homeLink");
+    homeLink.classList.toggle("active");
+
+    let navText = document.getElementById("countText");
+    navText.classList.toggle("makeVisible");
 };
 
 let validateInputs = (nodeList) => {
@@ -150,12 +166,11 @@ let validateInputs = (nodeList) => {
 
 
 let onCarouselNavClicked = (event) => {
-    let test = event.srcElement;
-    let nodeList = document.getElementsByClassName("active").item(1).querySelectorAll("input");
+    let nodeList = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("input");
     let isValid = validateInputs(nodeList);
     let user = window.benutzerName;
     if (isValid) {
-        let day = document.getElementsByClassName("active").item(1).querySelectorAll("h1")[0].innerHTML;
+        let day = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("h1")[0].innerHTML;
         day = day.slice(5, day.length - 1);
         let solUrl = nodeList[2].value;
         let question = nodeList[0].value;
@@ -171,30 +186,28 @@ let onCarouselNavClicked = (event) => {
             SolID: "",
             ResponseTxt: ""
         });
-        
+
         let array = window.SolArray;
         let index = array.indexOf(parseInt(day));
-        if(index !== -1){
-            array.splice(index,1);
-            document.getElementById("count").innerHTML =array.length;
-        }
-        
-        
-        if(event.srcElement.parentElement.classList.contains("carousel-control-prev")){
-              $('#carouselExampleIndicators').carousel('prev');
-        }
-        else if (event.srcElement.parentElement.classList.contains("carousel-control-next")){
-             $('#carouselExampleIndicators').carousel('next');
-        }
-        
+        if (index !== -1) {
+            array.splice(index, 1);
+            if (array.length === 0) {
+                document.getElementById("buttonForNext").classList.toggle("makeInVisible");
+                document.getElementById("textForCoutn").classList.remove("makeVisible");
+                document.getElementById("textForCoutn").classList.add("makeInVisible");
+            } else {
+                document.getElementById("count").innerHTML = array.length;
+            }
 
+        }
+
+
+        if (event.srcElement.parentElement.classList.contains("carousel-control-prev")) {
+            $('#carouselExampleIndicators').carousel('prev');
+        } else if (event.srcElement.parentElement.classList.contains("carousel-control-next")) {
+            $('#carouselExampleIndicators').carousel('next');
+        }
     }
-
-
-
-
-
-
 
 };
 
@@ -217,37 +230,213 @@ let saveToFireBase = (nodeList) => {
     });
 
 };
-let onHomeClicked = (event) => {
-    if (event.srcElement.classList.contains("active")) {
+let onNavbarClicked = (event) => {
+    let target = event.srcElement.id;
+    let sourceContainer = document.getElementsByClassName("navbar-nav");
+    let source = sourceContainer[0].getElementsByClassName("active")[0].id;
+    if (target !== source) {
 
-    } else {
-        allLinks = event.srcElement.parentElement.querySelectorAll("a");
-        for (let i = 0; i < allLinks; i++) {
-            allLinks[i].classList.remove("active");
-        }
-        event.srcElement.classList.add("active");
+        changeView(target, source);
     }
 };
-let onQuizClicked = (event) => {
-    if (event.srcElement.classList.contains("active")) {
 
-    } else {
-        allLinks = event.srcElement.parentElement.querySelectorAll("a");
+let changeView = (idToShow, soruce) => {
+    let isValid = false;
+
+    document.getElementsByClassName("active").item(1).querySelectorAll("input");
+    switch (soruce) {
+        case "homeLink":
+            let toValidateNodeList = document.getElementById("adminview").querySelectorAll("input");
+            isValid = validateInputs(toValidateNodeList);
+            break;
+        case "quizLink":
+            let nodeList = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("input");
+            isValid = validateInputs(nodeList);
+            break;
+        case "solLink":
+            let toValidNodeList = document.getElementById("solutionView").querySelectorAll("input");
+            isValid = validateInputs(toValidNodeList);
+            break;
+
+        default:
+
+            break;
+    }
+    if (isValid) {
+        document.getElementById(soruce).classList.toggle("active");
+        document.getElementById(idToShow).classList.toggle("active");
+        let allViews = document.getElementsByClassName("forSel");
+
+        for (let i = 0; i < allViews.length; i++) {
+            if (allViews[i].classList.contains("makeVisible")) {
+                allViews[i].classList.remove("makeVisible");
+                allViews[i].classList.add("makeInVisible");
+            }
+        }
+
+        switch (idToShow) {
+            case "homeLink":
+                allViews[0].classList.remove("makeInVisible");
+                allViews[0].classList.add("makeVisible");
+                break;
+            case "quizLink":
+                allViews[1].classList.remove("makeInVisible");
+                allViews[1].classList.add("makeVisible");
+                break;
+            case "solLink":
+                allViews[2].classList.remove("makeInVisible");
+                allViews[2].classList.add("makeVisible");
+                break;
+
+            default:
+
+                break;
+        }
+    }
+
+    if (isValid) {
+        let navbar = document.getElementsByClassName("navbar-nav");
+        let allLinks = navbar[0].querySelectorAll("a");
+        let highLightLink = document.getElementById(idToShow);
         for (let i = 0; i < allLinks; i++) {
             allLinks[i].classList.remove("active");
         }
-        event.srcElement.classList.add("active");
-        onGoToDayClicked();
+        highLightLink.classList.add("active");
+    }
+
+
+};
+
+
+
+let onInputChange = (event) => {
+    let allInputs = document.getElementById("solutionView").querySelectorAll("input");
+    let sURL = allInputs[0].value;
+    window.colCount = parseInt(allInputs[1].value);
+    window.rowCount = parseInt(allInputs[2].value);
+    if (window.colCount > 0 && window.rowCount > 0 && sURL !== "") {
+        makeBgImage(sURL);
     }
 };
-let onSolClicked = (event) => {
-    if (event.srcElement.classList.contains("active")) {
 
-    } else {
-        allLinks = event.srcElement.parentElement.querySelectorAll("a");
-        for (let i = 0; i < allLinks; i++) {
-            allLinks[i].classList.remove("active");
-        }
-        event.srcElement.classList.add("active");
+
+
+
+let createView = (countCol, countRow, fakeelement) => {
+    let table = document.getElementById("table");
+    while (table.firstChild) {
+        table.removeChild(table.firstChild);
     }
+    let width = window.innerWidth;
+    let widthPerCol = width / window.colCount;
+    let widthPerColRound = Math.round(widthPerCol);
+    let colDif = width - (widthPerColRound * window.colCount);
+
+    let height = Math.round(width / window.ratio);
+    let heightPerCol = height / window.rowCount;
+    let heightPerColRound = Math.round(heightPerCol);
+    let rowDif = height - (heightPerColRound * window.rowCount);
+
+    for (let i = 0; i < countRow; i++) {
+
+        let tr = document.createElement("tr");
+        tr.id = "" + (i + 1);
+        let height = 0;
+
+        if (i === countRow - 1) {
+            height = (heightPerColRound + rowDif) + "px";
+
+        } else {
+            height = heightPerColRound + "px";
+        }
+        tr.style.height = height;
+        for (let j = 0; j < countCol; j++) {
+            let td = document.createElement("td");
+            let tdID = (i + 1) + "_" + (j + 1);
+            td.id = tdID;
+            if (i === countCol - 1) {
+                td.style.width = (widthPerColRound + colDif) + "px";
+                td.style.height = height;
+            } else {
+                td.style.width = widthPerColRound + "px";
+                td.style.height = height;
+            }
+
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+
+    }
+
+    onImgResize(fakeelement);
+    window.addEventListener('resize', onImgResize);
+
+
+};
+
+
+let callBackOnload = (event) => {
+    //alert("test");
+    window.ratio = event.srcElement.naturalWidth / event.srcElement.naturalHeight;
+    var table = document.getElementById("table");
+    let fakeelement = {
+        srcElement: window
+    };
+    createView(window.colCount, window.rowCount, fakeelement);
+
+    //new ResizeObserver(onImgResize).observe(table);
+};
+let onImgResize = (event) => {
+
+    let width = window.getComputedStyle(document.getElementById("table")).width;
+    width = width.slice(0, width.length - 2);
+    let widthPerCol = width / window.colCount;
+    let widthPerColRound = Math.round(widthPerCol) ;
+    let colDif = width - (widthPerColRound * window.colCount);
+    let lastColWidth = (widthPerColRound + colDif) + "px";
+    let widthToUse = "";
+
+
+    let height = Math.round(width / window.ratio);
+    let heightPerCol = height / window.rowCount;
+    let heightPerColRound = Math.round(heightPerCol) ;
+    let rowDif = height - (heightPerColRound * window.rowCount);
+    let calcHeightLast = (heightPerColRound + rowDif) + "px";
+    let heightToUse = "";
+
+
+    let allTr = document.getElementsByTagName("tr");
+
+    for (let i = 0; i<allTr.length; i++) {
+        let allTd = allTr[i].querySelectorAll("td");
+        for (let j = 0; j< allTd.length; j++) {
+            if (i === allTr.length - 1) {
+                heightToUse = calcHeightLast;
+            } else {
+                heightToUse = heightPerColRound + "px";
+            }
+          
+            if (j === allTd.length - 1) {
+                widthToUse = lastColWidth;
+            }
+            else {
+                widthToUse =widthPerColRound + "px" ;
+            }
+              allTd[j].style.height = heightToUse;
+              allTd[j].style.width = widthToUse;
+        }
+      allTr[i].style.height = heightToUse;
+    }
+};
+
+let makeBgImage = (sURL) => {
+    let oTable = document.getElementById("table");
+    bgsURL = "url('" + sURL + "')";
+    oTable.style.backgroundImage = bgsURL;
+    var img = new Image();
+    img.onload = callBackOnload;
+    img.src = sURL;
+
+
+
 };

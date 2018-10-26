@@ -16,8 +16,11 @@ main{
 .makeItWhite{
     background: white;
 }
-.makeVisible{
+.makeInVisible{
     display: none !important;
+}
+.makeVisible{
+    display: block !important;
 }
 .makeRedBorder {
     border: red 1px solid !important;
@@ -129,3 +132,22 @@ main{
     font-weight: bold;
     color: white;
 }
+<<<<<<< HEAD
+=======
+.forSel{
+    
+}
+
+table{
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+td{
+    border: 1px red solid;
+}
+>>>>>>> 747599f26d8a31d0c77127b76bf34ad8139ad3de
