@@ -55,7 +55,7 @@ window.addEventListener("load", () => {
 let onbgColChange = (event) => {
     //let rgb = event.sourceElement.innerHTML.rgb;
     let bgcol = "rgb(" + Math.round(event.target.jscolor.rgb[0]) + "," + Math.round(event.target.jscolor.rgb[1]) + "," + Math.round(event.target.jscolor.rgb[2]) + ")";
-    let wrapper = document.getElementsByClassName("row cuberow");
+    let wrapper = document.getElementsByClassName("cuberow");
     wrapper[0].style.backgroundColor = bgcol;
 };
 let onCubeColChange = (event) => {
