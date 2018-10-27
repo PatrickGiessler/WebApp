@@ -13,8 +13,8 @@ window.database = firebase.database();
 window.addEventListener("load", () => {
     // Anwendung starten
 
-    window.rowCount = window.sessionStorage.getItem("rowCount");
-    window.colCount = window.sessionStorage.getItem("colCount");
+    window.rowCount = parseInt(window.sessionStorage.getItem("rowCount"));
+    window.colCount = parseInt(window.sessionStorage.getItem("colCount"));
 
     window.email = window.sessionStorage.getItem("user");
     window.color = window.sessionStorage.getItem("bgCol");

@@ -164,6 +164,9 @@ main{
     font-weight: bold;
     color: white;
 }
+.makeItBlack{
+     color: black !important;
+}
 
 #buttonForNext{
     width:20em;
@@ -185,3 +188,4 @@ table{
 td{
     border: 1px red solid;
 }
+
