@@ -72,7 +72,7 @@ main{
   }
 
   .carousel-control-next, .carousel-control-prev {
-    width: 15%;
+    width: 15% !important;
   }
 
   .carousel-control-prev {
@@ -118,8 +118,14 @@ main{
   margin-bottom: 6em;
 }
 
-.carousel-control-next, .carousel-control-prev {
-  width: 25%;
+@media (min-width:769px){
+  .carousel-control-next, .carousel-control-prev {
+    width: 25% !important;
+  }
+
+  .carousel-control-next{
+    right: 1.4em !important;
+  }
 }
 
 .carousel-control-next-icon, .carousel-control-prev-icon {
@@ -188,4 +194,3 @@ table{
 td{
     border: 1px red solid;
 }
-

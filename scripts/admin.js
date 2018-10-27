@@ -155,7 +155,7 @@ let validateInputs = (nodeList) => {
     if (faults === 0) {
         return true;
     } else {
-        alert("Alle Felder Auswüllen");
+        alert("Bitte füllen Sie alle Felder aus.");
         return false;
     }
 
@@ -577,4 +577,3 @@ let syncDataWithFirebase = (data) => {
 
     }
 };
-

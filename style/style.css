@@ -79,8 +79,8 @@ h1{
     width: 100%;
   }
 
-  #AntowrtForm, #ResponseForm{
-    width: 90%;
+  #AntwortForm, #ResponseForm{
+    width: 90% !important;
   }
 
   #zurückButton, #solutionButton{
