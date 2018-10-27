@@ -55,8 +55,8 @@ window.addEventListener("load", () => {
 let onbgColChange = (event) => {
     //let rgb = event.sourceElement.innerHTML.rgb;
     let bgcol = "rgb(" + Math.round(event.target.jscolor.rgb[0]) + "," + Math.round(event.target.jscolor.rgb[1]) + "," + Math.round(event.target.jscolor.rgb[2]) + ")";
-    let wrapper = document.getElementById("vorschau");
-    wrapper.style.backgroundColor = bgcol;
+    let wrapper = document.getElementsByClassName("row cuberow");
+    wrapper[0].style.backgroundColor = bgcol;
 };
 let onCubeColChange = (event) => {
     //let rgb = event.sourceElement.innerHTML.rgb;
@@ -121,7 +121,7 @@ onWrapperClicked = () => {
     wrapper.classList.toggle("open");
 };
 onGoToDayClicked = () => {
-    changeView("quizLink","homeLink");
+    changeView("quizLink", "homeLink");
 };
 
 let showQuiz = () => {
@@ -365,6 +365,7 @@ let createView = (countCol, countRow, fakeelement) => {
             let td = document.createElement("td");
             let tdID = (i + 1) + "_" + (j + 1);
             td.id = tdID;
+            td.addEventListener("click", onTdClicked);
             if (i === countCol - 1) {
                 td.style.width = (widthPerColRound + colDif) + "px";
                 td.style.height = height;
@@ -488,9 +489,6 @@ let createDataInFireBase = (username, data) => {
 
     });
 };
-
-
-
 let updateFirebase = (username, data) => {
     database.ref("/users/" + username).update({
         SolPic: data.SolPic,
@@ -498,18 +496,11 @@ let updateFirebase = (username, data) => {
         cubCol: data.cubCol,
         cubColSolved: data.cubColSolved,
         pw: data.pw,
-        
+
         colCount: data.colCount,
         rowCount: data.rowCount
     });
 };
-
-
-
-
-
-
-
 let fillViewWithExistingData = (data) => {
     document.getElementById("password").value = data.pw;
     setColForJSCOLORHEX(document.getElementById("bgCol"), data.backgroundCol);
@@ -545,11 +536,45 @@ let setColForJSCOLORHEX = (control, rgb) => {
     control.jscolor.fromRGB(r, g, b);
     control.dispatchEvent(new Event("change"));
 };
-let clearAllInputs = ()=>{
-   let allInputs =  document.getElementById("dayView").querySelectorAll("input");
-   
-   for(let i=0;i< allInputs.length; i++){
-       allInputs[i].value ="";
-   }
+let clearAllInputs = () => {
+    let allInputs = document.getElementById("dayView").querySelectorAll("input");
+
+    for (let i = 0; i < allInputs.length; i++) {
+        allInputs[i].value = "";
+    }
+};
+let onTdClicked = (event) => {
+
+    let bufferArray = [];
+    let id = event.srcElement.id;
+    if (window.forUpload !== undefined) {
+        bufferArray = window.forUpload;
+    }
+    if (bufferArray.length < 24) {
+        event.srcElement.classList.toggle("makeItWhite");
+
+        if (event.srcElement.classList.contains("makeItWhite")) {
+            bufferArray.push(event.srcElement.id);
+        } else {
+            bufferArray.splice(bufferArray.indexOf(id), 1);
+        }
+    }
+    document.getElementById("countPic").innerHTML = (24-bufferArray.length);
+    if (bufferArray.length === 24) {
+        syncDataWithFirebase(bufferArray);
+        bufferArray =[];
+    }
+
+    window.forUpload = bufferArray;
+
+};
+let syncDataWithFirebase = (data) => {
+    for (let i = 0; i < data.length; i++) {
+        let path = "/users/" + window.benutzerName + "/Days/Day" + (i + 1);
+        database.ref(path).update({
+            SolID: data[i]
+        });
+
+    }
 };
 
