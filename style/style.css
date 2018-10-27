@@ -106,6 +106,10 @@ footer{
   border-top-left-radius: 50% 20%;
   border-top-right-radius: 50% 20%;
   height: 3em;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 button {
