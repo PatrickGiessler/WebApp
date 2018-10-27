@@ -42,11 +42,11 @@ window.addEventListener("load", () => {
     inputUsername.addEventListener("change", onUserNameChange);
 
     let solURL = document.getElementById("picURl");
-    solURL.addEventListener("input", onInputChange);
+    solURL.addEventListener("change", onInputChange);
     let colCount = document.getElementById("colCount");
-    colCount.addEventListener("input", onInputChange);
+    colCount.addEventListener("change", onInputChange);
     let rowCount = document.getElementById("rowCount");
-    rowCount.addEventListener("input", onInputChange);
+    rowCount.addEventListener("change", onInputChange);
 
 
     window.SolArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
@@ -58,7 +58,6 @@ let onbgColChange = (event) => {
     let wrapper = document.getElementById("vorschau");
     wrapper.style.backgroundColor = bgcol;
 };
-
 let onCubeColChange = (event) => {
     //let rgb = event.sourceElement.innerHTML.rgb;
     let cubeCol = "rgb(" + Math.round(event.target.jscolor.rgb[0]) + "," + Math.round(event.target.jscolor.rgb[1]) + "," + Math.round(event.target.jscolor.rgb[2]) + ")";
@@ -122,13 +121,7 @@ onWrapperClicked = () => {
     wrapper.classList.toggle("open");
 };
 onGoToDayClicked = () => {
-    let toValidateNodeList = document.getElementById("adminview").querySelectorAll("input");
-    let isValid = validateInputs(toValidateNodeList);
-
-    if (isValid) {
-        saveToFireBase(toValidateNodeList);
-        showQuiz();
-    }
+    changeView("quizLink","homeLink");
 };
 
 let showQuiz = () => {
@@ -215,33 +208,32 @@ let onCarouselNavClicked = (event) => {
 
 };
 
-let saveToFireBase = (nodeList) => {
-
-    let Pw = nodeList[1].value;
-    let bgCol = "rgb(" + Math.round(nodeList[2].jscolor.rgb[0]) + "," + Math.round(nodeList[2].jscolor.rgb[1]) + "," + Math.round(nodeList[2].jscolor.rgb[2]) + ")";
-    let cubeCol = "rgb(" + Math.round(nodeList[3].jscolor.rgb[0]) + "," + Math.round(nodeList[3].jscolor.rgb[1]) + "," + Math.round(nodeList[3].jscolor.rgb[2]) + ")";
-    let CubeColSol = "rgb(" + Math.round(nodeList[4].jscolor.rgb[0]) + "," + Math.round(nodeList[4].jscolor.rgb[1]) + "," + Math.round(nodeList[4].jscolor.rgb[2]) + ")";
+let getDataForUpdate = () => {
+    let username = document.getElementById("username").value;
+    let Pw = document.getElementById("password").value;
+    let inpBG = document.getElementById("bgCol");
+    let bgCol = "rgb(" + Math.round(inpBG.jscolor.rgb[0]) + "," + Math.round(inpBG.jscolor.rgb[1]) + "," + Math.round(inpBG.jscolor.rgb[2]) + ")";
+    let inpCube = document.getElementById("cubeCol");
+    let cubeCol = "rgb(" + Math.round(inpCube.jscolor.rgb[0]) + "," + Math.round(inpCube.jscolor.rgb[1]) + "," + Math.round(inpCube.jscolor.rgb[2]) + ")";
+    let inpCubeSolv = document.getElementById("cubeColSolv");
+    let cubeColSol = "rgb(" + Math.round(inpCubeSolv.jscolor.rgb[0]) + "," + Math.round(inpCubeSolv.jscolor.rgb[1]) + "," + Math.round(inpCubeSolv.jscolor.rgb[2]) + ")";
     let Days = {};
-    if(window.days ===undefined || window.days === null){
-        
-    }
-    else{
-      Days = window.days;
-    }
-    
-    let colCount = 15;
-    let rowCount = 15;
-    let saveObject = {};
-    saveObject.SolPic = "";
-    saveObject.Days = Days;
-    saveObject.bgCol = bgCol;
-    saveObject.cubeCol = cubeCol;
-    saveObject.CubeColSol = CubeColSol;
-    saveObject.pw = Pw;
-    saveObject.colCount = colCount;
-    saveObject.rowCount = rowCount;
 
-    readData(nodeList[0].value, saveObject, true);
+    let colCount = document.getElementById("colCount").value;
+    let rowCount = document.getElementById("rowCount").value;
+    let solPic = document.getElementById("picURl").value;
+
+    let data = {};
+    data.SolPic = solPic;
+    data.Days = Days;
+    data.backgroundCol = bgCol;
+    data.cubCol = cubeCol;
+    data.cubColSolved = cubeColSol;
+    data.pw = Pw;
+    data.colCount = colCount;
+    data.rowCount = rowCount;
+
+    updateFirebase(username, data);
 
 
 };
@@ -251,20 +243,20 @@ let onNavbarClicked = (event) => {
     let sourceContainer = document.getElementsByClassName("navbar-nav");
     let source = sourceContainer[0].getElementsByClassName("active")[0].id;
     if (target !== source) {
-
         changeView(target, source);
     }
 };
 
 let changeView = (idToShow, soruce) => {
     let isValid = false;
-
     document.getElementsByClassName("active").item(1).querySelectorAll("input");
     switch (soruce) {
         case "homeLink":
             let toValidateNodeList = document.getElementById("adminview").querySelectorAll("input");
             isValid = validateInputs(toValidateNodeList);
-            saveToFireBase(toValidateNodeList);
+            if (isValid) {
+                getDataForUpdate();
+            }
             break;
         case "quizLink":
             let nodeList = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("input");
@@ -273,6 +265,9 @@ let changeView = (idToShow, soruce) => {
         case "solLink":
             let toValidNodeList = document.getElementById("solutionView").querySelectorAll("input");
             isValid = validateInputs(toValidNodeList);
+            if (isValid) {
+                getDataForUpdate();
+            }
             break;
 
         default:
@@ -303,6 +298,7 @@ let changeView = (idToShow, soruce) => {
             case "solLink":
                 allViews[2].classList.remove("makeInVisible");
                 allViews[2].classList.add("makeVisible");
+                document.getElementById("picURl").dispatchEvent(new Event("change"));
                 break;
 
             default:
@@ -329,7 +325,10 @@ let onInputChange = (event) => {
     let sURL = allInputs[0].value;
     window.colCount = parseInt(allInputs[1].value);
     window.rowCount = parseInt(allInputs[2].value);
+
+
     if (window.colCount > 0 && window.rowCount > 0 && sURL !== "") {
+        getDataForUpdate();
         makeBgImage(sURL);
     }
 };
@@ -453,68 +452,86 @@ let makeBgImage = (sURL) => {
 let onUserNameChange = (event) => {
     let username = event.srcElement.value;
     window.benutzerName = username;
-    let saveObject = {};
-    saveObject.SolPic = "";
-    saveObject.bgCol = "rgb(255,255,255)";
-    saveObject.cubeCol = "rgb(255,255,255)";
-    saveObject.CubeColSol = "rgb(255,255,255)";
-    saveObject.pw = "";
-    saveObject.Days = {};
-    saveObject.colCount = 15;
-    saveObject.rowCount = 15;
-    readData(username, saveObject, false);
+    let data = {};
+    data.SolPic = "";
+    data.backgroundCol = "rgb(255,255,255)";
+    data.cubCol = "rgb(255,255,255)";
+    data.cubColSolved = "rgb(255,255,255)";
+    data.pw = "";
+    data.Days = {};
+    data.colCount = 15;
+    data.rowCount = 15;
+    readData(username, data);
 };
-let readData = (username, toSaveObject, update) => {
+let readData = (username, data) => {
     let database = window.database;
     let ref = database.ref("/users/" + username);
     ref.on("value", function (snap) {
-        if (snap.val() === null) {
-            database.ref("/users/" + username).set({
-                SolPic: toSaveObject.SolPic,
-                backgroundCol: toSaveObject.bgCol,
-                cubCol: toSaveObject.cubeCol,
-                cubColSolved: toSaveObject.CubeColSol,
-                pw: toSaveObject.pw,
-                rowCount: toSaveObject.colCount,
-                colCount: toSaveObject.rowCount
-            });
-        }
-        else if (update){
-             database.ref("/users/" + username).update({
-                SolPic: toSaveObject.SolPic,
-                backgroundCol: toSaveObject.bgCol,
-                cubCol: toSaveObject.cubeCol,
-                cubColSolved: toSaveObject.CubeColSol,
-                pw: toSaveObject.pw,
-                rowCount: toSaveObject.colCount,
-                colCount: toSaveObject.rowCount
-            });
-        }    
-         else {
+        if (snap.val() !== null) {
             fillViewWithExistingData(snap.val());
+        } else {
+            createDataInFireBase(username, data);
         }
     });
 
 };
+let createDataInFireBase = (username, data) => {
+    database.ref("/users/" + username).set({
+        SolPic: data.SolPic,
+        backgroundCol: data.backgroundCol,
+        cubCol: data.cubCol,
+        cubColSolved: data.cubColSolved,
+        pw: data.pw,
+        Days: data.Days = {},
+        colCount: data.colCount,
+        rowCount: data.rowCount
+
+    });
+};
+
+
+
+let updateFirebase = (username, data) => {
+    database.ref("/users/" + username).update({
+        SolPic: data.SolPic,
+        backgroundCol: data.backgroundCol,
+        cubCol: data.cubCol,
+        cubColSolved: data.cubColSolved,
+        pw: data.pw,
+        
+        colCount: data.colCount,
+        rowCount: data.rowCount
+    });
+};
+
+
+
+
+
+
+
 let fillViewWithExistingData = (data) => {
     document.getElementById("password").value = data.pw;
     setColForJSCOLORHEX(document.getElementById("bgCol"), data.backgroundCol);
     setColForJSCOLORHEX(document.getElementById("cubeCol"), data.cubCol);
     setColForJSCOLORHEX(document.getElementById("cubeColSolv"), data.cubColSolved);
     document.getElementById("picURl").value = data.SolPic;
+
     document.getElementById("colCount").value = data.colCount;
     document.getElementById("rowCount").value = data.rowCount;
+    document.getElementById("picURl").dispatchEvent(new Event("change"));
     if (data.Days !== null) {
+        clearAllInputs()
         window.days = data.Days;
-        let i =0;
-        let allItems= document.getElementsByClassName("carousel-item");
-        for(let key in data.Days){
+        let i = 0;
+        let allItems = document.getElementsByClassName("carousel-item");
+        for (let key in data.Days) {
             let actuallItem = allItems[i];
             let allInputs = actuallItem.querySelectorAll("input");
             let actuallObject = data.Days[key];
             allInputs[0].value = actuallObject.Frage;
             allInputs[1].value = actuallObject.Antwort;
-            allInputs[2].value = actuallObject.ResponsePic; 
+            allInputs[2].value = actuallObject.ResponsePic;
             i++;
         }
     }
@@ -525,7 +542,14 @@ let setColForJSCOLORHEX = (control, rgb) => {
     let r = parseInt(rgbSplit[0]);
     let g = parseInt(rgbSplit[1]);
     let b = parseInt(rgbSplit[2]);
-    control.jscolor.fromRGB(r,g,b);
+    control.jscolor.fromRGB(r, g, b);
     control.dispatchEvent(new Event("change"));
+};
+let clearAllInputs = ()=>{
+   let allInputs =  document.getElementById("dayView").querySelectorAll("input");
+   
+   for(let i=0;i< allInputs.length; i++){
+       allInputs[i].value ="";
+   }
 };
 
