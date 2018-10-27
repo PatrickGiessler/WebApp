@@ -452,6 +452,7 @@ let makeBgImage = (sURL) => {
 
 let onUserNameChange = (event) => {
     let username = event.srcElement.value;
+    window.benutzerName = username;
     let saveObject = {};
     saveObject.SolPic = "";
     saveObject.bgCol = "rgb(255,255,255)";
