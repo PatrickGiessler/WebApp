@@ -1,3 +1,7 @@
+html{
+  height: 100%;
+}
+
 @keyframes snow{
     0%{
         background-position:0 0
@@ -51,6 +55,11 @@ h1{
     margin-left: -1.5em !important;
     margin-right: 0em !important;
   }
+
+  header{
+    padding-top: 0.5em !important;
+  }
+
   #calendarHeader {
     margin-left: auto !important;
   }
@@ -80,13 +89,23 @@ h1{
 
 header{
   background-color: white;
-  padding-top: 2em;
+  padding-top: 1.5em;
+  border-bottom-left-radius: 50% 20%;
+  border-bottom-right-radius: 50% 20%;
 }
 
 #calendarHeader{
-  text-align: left;
-  margin-left: 2em;
-  padding-bottom: 0.5em;
+  text-align: center;
+  padding-bottom: 0.9em;
+  font-family: 'Dancing Script', cursive;
+  font-style: italic;
+}
+
+footer{
+  background-color: white;
+  border-top-left-radius: 50% 20%;
+  border-top-right-radius: 50% 20%;
+  height: 3em;
 }
 
 button {
