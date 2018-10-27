@@ -37,6 +37,10 @@ window.addEventListener("load", () => {
     let solLink = document.getElementById("solLink");
     solLink.addEventListener("click", onNavbarClicked);
 
+
+    let inputUsername = document.getElementById("username");
+    inputUsername.addEventListener("change", onUserNameChange);
+
     let solURL = document.getElementById("picURl");
     solURL.addEventListener("input", onInputChange);
     let colCount = document.getElementById("colCount");
@@ -212,24 +216,36 @@ let onCarouselNavClicked = (event) => {
 };
 
 let saveToFireBase = (nodeList) => {
-    window.benutzerName = nodeList[0].value;
+
     let Pw = nodeList[1].value;
     let bgCol = "rgb(" + Math.round(nodeList[2].jscolor.rgb[0]) + "," + Math.round(nodeList[2].jscolor.rgb[1]) + "," + Math.round(nodeList[2].jscolor.rgb[2]) + ")";
     let cubeCol = "rgb(" + Math.round(nodeList[3].jscolor.rgb[0]) + "," + Math.round(nodeList[3].jscolor.rgb[1]) + "," + Math.round(nodeList[3].jscolor.rgb[2]) + ")";
     let CubeColSol = "rgb(" + Math.round(nodeList[4].jscolor.rgb[0]) + "," + Math.round(nodeList[4].jscolor.rgb[1]) + "," + Math.round(nodeList[4].jscolor.rgb[2]) + ")";
     let Days = {};
+    if(window.days ===undefined || window.days === null){
+        
+    }
+    else{
+      Days = window.days;
+    }
+    
+    let colCount = 15;
+    let rowCount = 15;
+    let saveObject = {};
+    saveObject.SolPic = "";
+    saveObject.Days = Days;
+    saveObject.bgCol = bgCol;
+    saveObject.cubeCol = cubeCol;
+    saveObject.CubeColSol = CubeColSol;
+    saveObject.pw = Pw;
+    saveObject.colCount = colCount;
+    saveObject.rowCount = rowCount;
 
-    let path = "/users/" + window.benutzerName;
-    database.ref(path).set({
-        SolPic: "",
-        Days: Days,
-        backgroundCol: bgCol,
-        cubCol: cubeCol,
-        cubColSolved: CubeColSol,
-        pw: Pw
-    });
+    readData(nodeList[0].value, saveObject, true);
+
 
 };
+
 let onNavbarClicked = (event) => {
     let target = event.srcElement.id;
     let sourceContainer = document.getElementsByClassName("navbar-nav");
@@ -248,6 +264,7 @@ let changeView = (idToShow, soruce) => {
         case "homeLink":
             let toValidateNodeList = document.getElementById("adminview").querySelectorAll("input");
             isValid = validateInputs(toValidateNodeList);
+            saveToFireBase(toValidateNodeList);
             break;
         case "quizLink":
             let nodeList = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("input");
@@ -307,8 +324,6 @@ let changeView = (idToShow, soruce) => {
 
 };
 
-
-
 let onInputChange = (event) => {
     let allInputs = document.getElementById("solutionView").querySelectorAll("input");
     let sURL = allInputs[0].value;
@@ -318,9 +333,6 @@ let onInputChange = (event) => {
         makeBgImage(sURL);
     }
 };
-
-
-
 
 let createView = (countCol, countRow, fakeelement) => {
     let table = document.getElementById("table");
@@ -374,7 +386,6 @@ let createView = (countCol, countRow, fakeelement) => {
 
 };
 
-
 let callBackOnload = (event) => {
     //alert("test");
     window.ratio = event.srcElement.naturalWidth / event.srcElement.naturalHeight;
@@ -391,7 +402,7 @@ let onImgResize = (event) => {
     let width = window.getComputedStyle(document.getElementById("table")).width;
     width = width.slice(0, width.length - 2);
     let widthPerCol = width / window.colCount;
-    let widthPerColRound = Math.round(widthPerCol) ;
+    let widthPerColRound = Math.round(widthPerCol);
     let colDif = width - (widthPerColRound * window.colCount);
     let lastColWidth = (widthPerColRound + colDif) + "px";
     let widthToUse = "";
@@ -399,7 +410,7 @@ let onImgResize = (event) => {
 
     let height = Math.round(width / window.ratio);
     let heightPerCol = height / window.rowCount;
-    let heightPerColRound = Math.round(heightPerCol) ;
+    let heightPerColRound = Math.round(heightPerCol);
     let rowDif = height - (heightPerColRound * window.rowCount);
     let calcHeightLast = (heightPerColRound + rowDif) + "px";
     let heightToUse = "";
@@ -407,28 +418,26 @@ let onImgResize = (event) => {
 
     let allTr = document.getElementsByTagName("tr");
 
-    for (let i = 0; i<allTr.length; i++) {
+    for (let i = 0; i < allTr.length; i++) {
         let allTd = allTr[i].querySelectorAll("td");
-        for (let j = 0; j< allTd.length; j++) {
+        for (let j = 0; j < allTd.length; j++) {
             if (i === allTr.length - 1) {
                 heightToUse = calcHeightLast;
             } else {
                 heightToUse = heightPerColRound + "px";
             }
-          
+
             if (j === allTd.length - 1) {
                 widthToUse = lastColWidth;
+            } else {
+                widthToUse = widthPerColRound + "px";
             }
-            else {
-                widthToUse =widthPerColRound + "px" ;
-            }
-              allTd[j].style.height = heightToUse;
-              allTd[j].style.width = widthToUse;
+            allTd[j].style.height = heightToUse;
+            allTd[j].style.width = widthToUse;
         }
-      allTr[i].style.height = heightToUse;
+        allTr[i].style.height = heightToUse;
     }
 };
-
 let makeBgImage = (sURL) => {
     let oTable = document.getElementById("table");
     bgsURL = "url('" + sURL + "')";
@@ -440,3 +449,82 @@ let makeBgImage = (sURL) => {
 
 
 };
+
+let onUserNameChange = (event) => {
+    let username = event.srcElement.value;
+    let saveObject = {};
+    saveObject.SolPic = "";
+    saveObject.bgCol = "rgb(255,255,255)";
+    saveObject.cubeCol = "rgb(255,255,255)";
+    saveObject.CubeColSol = "rgb(255,255,255)";
+    saveObject.pw = "";
+    saveObject.Days = {};
+    saveObject.colCount = 15;
+    saveObject.rowCount = 15;
+    readData(username, saveObject, false);
+};
+let readData = (username, toSaveObject, update) => {
+    let database = window.database;
+    let ref = database.ref("/users/" + username);
+    ref.on("value", function (snap) {
+        if (snap.val() === null) {
+            database.ref("/users/" + username).set({
+                SolPic: toSaveObject.SolPic,
+                backgroundCol: toSaveObject.bgCol,
+                cubCol: toSaveObject.cubeCol,
+                cubColSolved: toSaveObject.CubeColSol,
+                pw: toSaveObject.pw,
+                rowCount: toSaveObject.colCount,
+                colCount: toSaveObject.rowCount
+            });
+        }
+        else if (update){
+             database.ref("/users/" + username).update({
+                SolPic: toSaveObject.SolPic,
+                backgroundCol: toSaveObject.bgCol,
+                cubCol: toSaveObject.cubeCol,
+                cubColSolved: toSaveObject.CubeColSol,
+                pw: toSaveObject.pw,
+                rowCount: toSaveObject.colCount,
+                colCount: toSaveObject.rowCount
+            });
+        }    
+         else {
+            fillViewWithExistingData(snap.val());
+        }
+    });
+
+};
+let fillViewWithExistingData = (data) => {
+    document.getElementById("password").value = data.pw;
+    setColForJSCOLORHEX(document.getElementById("bgCol"), data.backgroundCol);
+    setColForJSCOLORHEX(document.getElementById("cubeCol"), data.cubCol);
+    setColForJSCOLORHEX(document.getElementById("cubeColSolv"), data.cubColSolved);
+    document.getElementById("picURl").value = data.SolPic;
+    document.getElementById("colCount").value = data.colCount;
+    document.getElementById("rowCount").value = data.rowCount;
+    if (data.Days !== null) {
+        window.days = data.Days;
+        let i =0;
+        let allItems= document.getElementsByClassName("carousel-item");
+        for(let key in data.Days){
+            let actuallItem = allItems[i];
+            let allInputs = actuallItem.querySelectorAll("input");
+            let actuallObject = data.Days[key];
+            allInputs[0].value = actuallObject.Frage;
+            allInputs[1].value = actuallObject.Antwort;
+            allInputs[2].value = actuallObject.ResponsePic; 
+            i++;
+        }
+    }
+
+};
+let setColForJSCOLORHEX = (control, rgb) => {
+    let rgbSplit = rgb.slice(4, rgb.length - 1).split(",");
+    let r = parseInt(rgbSplit[0]);
+    let g = parseInt(rgbSplit[1]);
+    let b = parseInt(rgbSplit[2]);
+    control.jscolor.fromRGB(r,g,b);
+    control.dispatchEvent(new Event("change"));
+};
+

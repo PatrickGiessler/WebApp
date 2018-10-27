@@ -25,13 +25,13 @@ window.addEventListener("load", () => {
     window.eyeL = document.querySelector('.eyeL');
     window.eyeR = document.querySelector('.eyeR');
     window.nose = document.querySelector('.nose');
-   window.mouth = document.querySelector('.mouth');
+    window.mouth = document.querySelector('.mouth');
     window.mouthBG = document.querySelector('.mouthBG');
     window.mouthSmallBG = document.querySelector('.mouthSmallBG'),
-    window.mouthMediumBG = document.querySelector('.mouthMediumBG');
+            window.mouthMediumBG = document.querySelector('.mouthMediumBG');
     window.mouthLargeBG = document.querySelector('.mouthLargeBG');
-   window.mouthMaskPath = document.querySelector('#mouthMaskPath');
-   window.mouthOutline = document.querySelector('.mouthOutline');
+    window.mouthMaskPath = document.querySelector('#mouthMaskPath');
+    window.mouthOutline = document.querySelector('.mouthOutline');
     window.tooth = document.querySelector('.tooth');
     window.tongue = document.querySelector('.tongue');
     window.chin = document.querySelector('.chin');
@@ -67,7 +67,7 @@ window.addEventListener("load", () => {
     window.email.addEventListener('input', onemailInput);
     window.password.addEventListener('focus', onpasswordFocus);
     window.password.addEventListener('blur', onpasswordBlur);
-     window.password.addEventListener('keyup', onInputKeyUp);
+    window.password.addEventListener('keyup', onInputKeyUp);
     TweenMax.set(window.armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
     TweenMax.set(window.armR, {x: -93, y: 220, rotation: -105, transformOrigin: "top right"});
 
@@ -169,11 +169,11 @@ function getCoord(e) {
 function onemailInput(e) {
     getCoord(e);
     var value = e.target.value;
-    curEmailIndex= value.length;
+    curEmailIndex = value.length;
 
     // very crude window.email validation for now to trigger effects
-    if (curEmailIndex   > 0) {
-        if (window.mouthStatus == "small") {
+    if (curEmailIndex > 0) {
+        if (window.mouthStatus === "small") {
             window.mouthStatus = "medium";
             TweenMax.to([window.mouthBG, window.mouthOutline, window.mouthMaskPath], 1, {morphSVG: window.mouthMediumBG, shapeIndex: 8, ease: Expo.easeOut});
             TweenMax.to(window.tooth, 1, {x: 0, y: 0, ease: Expo.easeOut});
@@ -208,7 +208,7 @@ function onemailFocus(e) {
 }
 
 function onemailBlur(e) {
-    if (e.target.value == "") {
+    if (e.target.value === "") {
         e.target.parentElement.classList.remove("focusWithText");
     }
     resetface();
@@ -274,39 +274,45 @@ function getPosition(el) {
     };
 }
 
-let onLogInClicked =(event)=>{
+let onLogInClicked = (event) => {
     let email = window.email.value;
-    let inputPW =   window.password.value;
+    let inputPW = window.password.value;
     let pw = "";
+    let colCount = 0;
+    let rowCount = 0;
 
 
     email = email.substr(0, email.indexOf('@'));
 
     let database = window.database;
-    let ref = database.ref("/users/"+email);
-     ref.on("value", function (snap) {
+    let ref = database.ref("/users/" + email);
+    ref.on("value", function (snap) {
         pw = snap.val().pw;
         col = snap.val().backgroundCol;
         cubRGB = snap.val().cubCol;
-        cubRGBSolv=  snap.val().cubColSolved;
-        if (pw === inputPW){
-            window.sessionStorage.setItem("user",email);
-            window.sessionStorage.setItem("bgCol",col);
-            window.sessionStorage.setItem("cubRGB",cubRGB);
-            window.sessionStorage.setItem("cubRGBSolv",cubRGBSolv);
+        cubRGBSolv = snap.val().cubColSolved;
+        colCount = snap.val().colCount;
+        rowCount = snap.val().rowCount;
+        if (pw === inputPW) {
+            window.sessionStorage.setItem("user", email);
+            window.sessionStorage.setItem("bgCol", col);
+            window.sessionStorage.setItem("cubRGB", cubRGB);
+            window.sessionStorage.setItem("cubRGBSolv", cubRGBSolv);
+            window.sessionStorage.setItem("colCount", colCount);
+            window.sessionStorage.setItem("rowCount", rowCount);
+
             window.location.href = "./index.html";
-        }
-        else{
+        } else {
             alert("E-Mail oder Passwort falsch");
         }
     });
 
 };
-let onInputKeyUp = (event)=>{
+let onInputKeyUp = (event) => {
     event.preventDefault();
-  // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    // Trigger the button element with a click
-    document.getElementById("login").click();
-  }
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+        // Trigger the button element with a click
+        document.getElementById("login").click();
+    }
 };
