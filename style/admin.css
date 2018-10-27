@@ -136,11 +136,14 @@ main{
     font-weight: bold;
     color: white;
 }
+<<<<<<< HEAD
 
 #buttonForNext{
     width:20em;
 }
 
+=======
+>>>>>>> f336de590508014b6d11fcb1ff3f4b0da4a2b31e
 .forSel{
 
 }
@@ -157,3 +160,7 @@ table{
 td{
     border: 1px red solid;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f336de590508014b6d11fcb1ff3f4b0da4a2b31e
