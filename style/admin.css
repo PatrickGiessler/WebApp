@@ -24,9 +24,14 @@ main{
 .makeInVisible{
     display: none !important;
 }
-.makeVisible{
-    display: block !important;
+.makeVisible {
+      display: block !important;
 }
+
+.makeAdminVisible {
+      display: flex !important;
+}
+
 .makeRedBorder {
     border: red 1px solid !important;
 }
