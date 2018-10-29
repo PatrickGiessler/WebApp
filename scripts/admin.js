@@ -126,7 +126,7 @@ onGoToDayClicked = () => {
 
 let showQuiz = () => {
     let adminView = document.getElementById("adminview");
-    adminView.classList.remove("makeVisible");
+    adminView.classList.remove("makeAdminVisible");
     adminView.classList.add("makeInVisible");
 
     document.getElementById("textForCoutn").classList.remove("makeInVisible");
@@ -165,7 +165,7 @@ let validateInputs = (nodeList) => {
 let onCarouselNavClicked = (event) => {
     let nodeList = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("input");
     let isValid = validateInputs(nodeList);
-    let user = window.benutzerName;
+    let user = document.getElementById("username").value;
     if (isValid) {
         let day = document.getElementsByClassName("carousel-item active")[0].querySelectorAll("h1")[0].innerHTML;
         day = day.slice(5, day.length - 1);
@@ -280,8 +280,9 @@ let changeView = (idToShow, soruce) => {
         let allViews = document.getElementsByClassName("forSel");
 
         for (let i = 0; i < allViews.length; i++) {
-            if (allViews[i].classList.contains("makeVisible")) {
+            if (allViews[i].classList.contains("makeVisible")|| allViews[i].classList.contains("makeAdminVisible")) {
                 allViews[i].classList.remove("makeVisible");
+                  allViews[i].classList.remove("makeAdminVisible");
                 allViews[i].classList.add("makeInVisible");
             }
         }
@@ -289,7 +290,7 @@ let changeView = (idToShow, soruce) => {
         switch (idToShow) {
             case "homeLink":
                 allViews[0].classList.remove("makeInVisible");
-                allViews[0].classList.add("makeVisible");
+                allViews[0].classList.add("makeAdminVisible");
                 break;
             case "quizLink":
                 allViews[1].classList.remove("makeInVisible");

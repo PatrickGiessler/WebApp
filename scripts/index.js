@@ -52,7 +52,7 @@ let getData = (email) => {
     let ref = database.ref("/users/" + email + "/Days");
     ref.on("value", function (snap) {
         generateView(snap.val());
-        
+
     });
 };
 
@@ -110,10 +110,10 @@ let addViewElement = (kalender, selectedData) => {
 
 
     let sectionWrapper = document.createElement("section");
-    
+
     sectionWrapper.className = "col-xs-4 ";
     sectionWrapper.addEventListener("click", onDoorKlicked);
-    
+
        let cubeDiv1 = document.createElement("div");
     cubeDiv1.className = "cube-wrapper";
     sectionWrapper.appendChild(cubeDiv1);
@@ -282,7 +282,7 @@ let onCheckClicked = (event) => {
 
 
         if (email === null || email === undefined) {
-            alert("ups, da ging was schief! bitte nochmals anmelden");
+            alert("Ups, da ging leider etwas schief! Bitte melden Sie sich nochmals an!");
             window.location.href = "./login.html";
         } else {
             let path = "/users/" + email + "/Days/Day" + day;
