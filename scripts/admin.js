@@ -47,7 +47,8 @@ window.addEventListener("load", () => {
     colCount.addEventListener("change", onInputChange);
     let rowCount = document.getElementById("rowCount");
     rowCount.addEventListener("change", onInputChange);
-
+    
+    bindEventsToIndicators();
 
     window.SolArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
@@ -576,4 +577,15 @@ let syncDataWithFirebase = (data) => {
         });
 
     }
+};
+let bindEventsToIndicators=()=>{
+  let allIndicators = document.getElementsByClassName("carousel-indicators")[0].children;
+  for (let i = 0; i< allIndicators.length; i++){
+      allIndicators[i].addEventListener("click", onIndicatorCklicked);
+  }
+    
+};
+let onIndicatorCklicked = (event)=>{
+   let allIndicators = document.getElementById("carousel-indicators").getElementsByClassName("active");
+   
 };
