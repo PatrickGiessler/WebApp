@@ -201,9 +201,9 @@ let onCarouselNavClicked = (event) => {
 
 
         if (event.srcElement.parentElement.classList.contains("carousel-control-prev")) {
-            $('#carouselExampleIndicators').carousel('prev');
+            $('#carousel').carousel('prev');
         } else if (event.srcElement.parentElement.classList.contains("carousel-control-next")) {
-            $('#carouselExampleIndicators').carousel('next');
+            $('#carousel').carousel('next');
         }
     }
 
@@ -587,6 +587,26 @@ let bindEventsToIndicators=()=>{
     
 };
 let onIndicatorCklicked = (event)=>{
-   let allIndicators = document.getElementById("carousel-indicators").getElementsByClassName("active");
+   let liTarget = event.srcElement;
+   let targetNum = liTarget.dataset.slideTo;
+   let liSrc = document.getElementsByClassName("carousel-indicators")[0].getElementsByClassName("active")[0];
+   let divSrc = document.getElementsByClassName("carousel-item active")[0];
+   let allSrcInp = divSrc.querySelectorAll("input");
+   let allCarouselItems = document.getElementsByClassName("carousel-item");
+   let isValid = validateInputs(allSrcInp);
+   
+   if(isValid){
+       //navigate
+       divSrc.classList.toggle("active");
+       allCarouselItems[targetNum].classList.toggle("active");
+       
+       liSrc.classList.toggle("active");
+       liTarget.classList.toggle("active");
+       
+   }
+   else{
+       //break;
+   }
+   
    
 };
