@@ -282,7 +282,7 @@ let onLogInClicked = (event) => {
     let rowCount = 0;
 
 
-    email = email.substr(0, email.indexOf('@'));
+   
 
     let database = window.database;
     let ref = database.ref("/users/" + email);
