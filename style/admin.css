@@ -17,6 +17,9 @@ main{
   font-weight: 500;
   margin-bottom: 0.1em;
 }
+.navbar-nav{
+    cursor: pointer !important;
+}
 
 .makeItWhite{
     background: white;
