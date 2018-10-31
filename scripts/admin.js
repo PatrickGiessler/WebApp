@@ -41,6 +41,9 @@ window.addEventListener("load", () => {
     let inputUsername = document.getElementById("username");
     inputUsername.addEventListener("change", onUserNameChange);
 
+     let successbtn =document.getElementById("buttonForNext");
+     successbtn.addEventListener("click", onSuccessClicked);
+
     let solURL = document.getElementById("picURl");
     solURL.addEventListener("change", onInputChange);
     let colCount = document.getElementById("colCount");
@@ -236,6 +239,11 @@ let getDataForUpdate = () => {
     updateFirebase(username, data);
 
 
+};
+
+let onSuccessClicked = (event) => {
+        changeView("solLink", "quizLink");
+        event.srcElement.style.display = "none";
 };
 
 let onNavbarClicked = (event) => {
