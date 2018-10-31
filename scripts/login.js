@@ -1,5 +1,5 @@
 
-var firebase = require('firebase');
+//var firebase = require('firebase');
 var config = {
     apiKey: "AIzaSyCof8vlK6qFoGmZOAZDX8MjIV-0_sHl73g",
     databaseURL: "https://projektfordh.firebaseio.com/",
@@ -282,7 +282,7 @@ let onLogInClicked = (event) => {
     let rowCount = 0;
 
 
-    email = email.substr(0, email.indexOf('@'));
+   
 
     let database = window.database;
     let ref = database.ref("/users/" + email);

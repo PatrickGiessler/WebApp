@@ -1,4 +1,4 @@
-var firebase = require('firebase');
+//var firebase = require('firebase');
 var config = {
     apiKey: "AIzaSyCof8vlK6qFoGmZOAZDX8MjIV-0_sHl73g",
     databaseURL: "https://projektfordh.firebaseio.com/",
@@ -50,7 +50,8 @@ window.addEventListener("load", () => {
     colCount.addEventListener("change", onInputChange);
     let rowCount = document.getElementById("rowCount");
     rowCount.addEventListener("change", onInputChange);
-
+    
+    bindEventsToIndicators();
 
     window.SolArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
@@ -203,9 +204,9 @@ let onCarouselNavClicked = (event) => {
 
 
         if (event.srcElement.parentElement.classList.contains("carousel-control-prev")) {
-            $('#carouselExampleIndicators').carousel('prev');
+            $('#carousel').carousel('prev');
         } else if (event.srcElement.parentElement.classList.contains("carousel-control-next")) {
-            $('#carouselExampleIndicators').carousel('next');
+            $('#carousel').carousel('next');
         }
     }
 
@@ -585,4 +586,35 @@ let syncDataWithFirebase = (data) => {
         });
 
     }
+};
+let bindEventsToIndicators=()=>{
+  let allIndicators = document.getElementsByClassName("carousel-indicators")[0].children;
+  for (let i = 0; i< allIndicators.length; i++){
+      allIndicators[i].addEventListener("click", onIndicatorCklicked);
+  }
+    
+};
+let onIndicatorCklicked = (event)=>{
+   let liTarget = event.srcElement;
+   let targetNum = liTarget.dataset.slideTo;
+   let liSrc = document.getElementsByClassName("carousel-indicators")[0].getElementsByClassName("active")[0];
+   let divSrc = document.getElementsByClassName("carousel-item active")[0];
+   let allSrcInp = divSrc.querySelectorAll("input");
+   let allCarouselItems = document.getElementsByClassName("carousel-item");
+   let isValid = validateInputs(allSrcInp);
+   
+   if(isValid){
+       //navigate
+       divSrc.classList.toggle("active");
+       allCarouselItems[targetNum].classList.toggle("active");
+       
+       liSrc.classList.toggle("active");
+       liTarget.classList.toggle("active");
+       
+   }
+   else{
+       //break;
+   }
+   
+   
 };
