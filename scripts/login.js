@@ -277,13 +277,18 @@ function getPosition(el) {
 let onLogInClicked = (event) => {
     let email = window.email.value;
     let inputPW = window.password.value;
+    if (email.toLowerCase()=== "admin"){
+        if (inputPW ==="admin"){
+          window.location.href = "./admin.html";
+      }
+      else{
+          alert("leider falsches Admin-Passwort");
+      }
+    }
+    else{
     let pw = "";
     let colCount = 0;
     let rowCount = 0;
-
-
-   
-
     let database = window.database;
     let ref = database.ref("/users/" + email);
     ref.on("value", function (snap) {
@@ -306,7 +311,7 @@ let onLogInClicked = (event) => {
             alert("E-Mail oder Passwort falsch");
         }
     });
-
+    }
 };
 let onInputKeyUp = (event) => {
     event.preventDefault();
