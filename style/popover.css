@@ -1,5 +1,15 @@
+@media (max-width:768px){
+  #AntwortForm{
+    width: 85%;
+  }
+  #question{
+    font-size: 1.5em !important;
+  }
+}
+
+
 #question{
-  font-size: 3em;
+  font-size: 2.2em;
 }
 
 #answer{
